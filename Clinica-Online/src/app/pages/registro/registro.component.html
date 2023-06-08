@@ -1,0 +1,35 @@
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <div *ngIf="true" style="position: absolute;">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="padding-left: 10px;">
+        <li class="nav-item">
+          <a class="btn btn-primary" aria-current="page" routerLink="/bienvenido">Bienvenido</a>
+        </li>
+      </ul>
+    </div>
+      <div class="container">
+        <a class="navbar-brand" style="margin: auto">
+          <img src="../../../assets/honduras.png" alt="" width="40vw">
+        </a>
+      </div>
+  </nav>
+<!---------------------------------MENU ELECCION------------------------------------------->
+<div *ngIf="eleccion == 'ninguno'">
+    <div class="text-center container-login">
+        <div class="login" (click)="eleccion = 'especialista'">
+          Especialista
+        </div>
+        <div class="login" (click)="eleccion = 'paciente'">
+          Paciente
+        </div>
+    </div>
+</div>
+
+<!---------------------------------PACIENTE------------------------------------------->
+<div *ngIf="eleccion == 'paciente'">
+    <app-alta-paciente></app-alta-paciente>
+</div>
+
+<!---------------------------------ESPECIALISTA------------------------------------------->
+<div *ngIf="eleccion == 'especialista'">
+    <app-alta-especialista></app-alta-especialista>
+</div>

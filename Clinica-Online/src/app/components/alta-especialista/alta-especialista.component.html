@@ -1,0 +1,82 @@
+<form [formGroup]="formAltaEspecialista" class="col-md-6 col-lg-9" style="padding-top: 3%; padding-left: 3%;" (ngSubmit)="altaEspecialista()">
+  <div class="row g-3">
+      <div class="col-sm-3">
+        <label for="firstName" class="form-label">Nombre</label>
+        <input type="text" class="form-control" formControlName="nombre" value="" placeholder="" required>
+          <div *ngIf="formAltaEspecialista.controls.nombre.errors?.required &&
+          formAltaEspecialista.controls.nombre.touched">
+          El nombre es requerido.
+          </div>
+      </div>
+
+      <div class="col-sm-3">
+        <label for="lastName" class="form-label">Apellido</label>
+        <input type="text" class="form-control" formControlName="apellido" placeholder="" value="" required>
+          <div *ngIf="formAltaEspecialista.controls.apellido.errors?.required &&
+          formAltaEspecialista.controls.apellido.touched">
+          El apellido es requerido.
+          </div>
+      </div>
+
+      <div class="col-sm-3">
+          <label for="lastName" class="form-label">Edad</label>
+          <input type="text" class="form-control" formControlName="edad" placeholder="" value="" required>
+          <div *ngIf="formAltaEspecialista.controls.edad.errors?.required &&
+          formAltaEspecialista.controls.edad.touched">
+          La edad es requerida.
+          </div>
+      </div>
+
+      <div class="col-sm-3">
+        <label for="lastName" class="form-label">DNI</label>
+        <input type="text" class="form-control" formControlName="dni" placeholder="" value="" required>
+          <div *ngIf="formAltaEspecialista.controls.dni.errors?.required &&
+          formAltaEspecialista.controls.dni.touched">
+          El dni es requerido.
+          </div>
+      </div>
+
+      <div class="col-4">
+        <label for="email" class="form-label">Correo</label>
+        <input type="email" class="form-control" formControlName="mail" value="" placeholder="" required>
+        <div *ngIf="formAltaEspecialista.controls.mail.errors?.required &&
+        formAltaEspecialista.controls.mail.touched">
+        El correo es requerido.
+        </div>
+      </div>
+
+      <div class="col-4">
+        <label for="address" class="form-label">Contrasenia</label>
+        <input type="password" class="form-control" formControlName="pass" value="" placeholder="" required>
+          <div *ngIf="formAltaEspecialista.controls.pass.errors?.required &&
+          formAltaEspecialista.controls.pass.touched">
+          La contraseña es requerida.
+          </div>
+      </div>
+
+      <div class="col-4">
+        <label for="address2" class="form-label">Especialidad</label>
+        <label type="text" class="form-control" name="txtEsp">{{this.especialidad}}</label>
+      </div>
+
+      <div class="col-md-12">
+        <label for="zip" class="form-label">Img Perfil</label>
+        <input (change)="uploadImage($event)" type="file" class="form-control" formControlName="imgPerfil_1" id="imgPerfil_1" placeholder="" value="" required>
+          <div *ngIf="formAltaEspecialista.controls.imgPerfil_1.errors?.required &&
+          formAltaEspecialista.controls.imgPerfil_1.touched">
+          La Imagen es requerida.
+          </div>
+      </div>
+    </div>
+
+    <div class="col-md-8" style="padding-top: 4%;">
+      <button type="submit" class="btn btn-primary btn-block" [disabled]="formAltaEspecialista.disabled">Dar de alta</button>
+    </div>
+</form>
+
+<div class="list-group" style="max-width: 20%; float: right; margin-top: -300px; margin-right: 3%;">
+  Elegir especialidad:
+  <button (click)="this.especialidad = 'Odontologo'" class="list-group-item list-group-item-action">Odontologo</button>
+  <a (click)="this.especialidad = 'Cardiologo'" class="list-group-item list-group-item-action">Cardiologo</a>
+  <a (click)="this.especialidad = 'Dentista'" class="list-group-item list-group-item-action">Dentista</a>
+</div>

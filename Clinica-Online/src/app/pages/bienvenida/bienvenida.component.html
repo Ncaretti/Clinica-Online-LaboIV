@@ -1,0 +1,41 @@
+<div>
+  <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <div *ngIf="usuarioActivo.perfil == 'admin'" style="position: absolute;">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="padding-left: 10px;">
+        <li class="nav-item">
+          <a class="btn btn-primary" aria-current="page" routerLink="/admin-user">Administrar Usuarios</a>
+        </li>
+      </ul>
+    </div>
+      <div class="container">
+        <a class="navbar-brand" style="margin: auto">
+          <img src="../../../assets/honduras.png" alt="" width="40vw">
+        </a>
+      </div>
+  </nav>
+  <div class="text-center container-login">
+    <div class="login" (click)="irLogin()">
+      Login
+    </div>
+    <div class="login" (click)="irRegistrar()">
+      Registrar
+    </div>
+  </div>
+</div>
+
+
+<!-- <div class="carrusel" style="background-color: aquamarine;">
+  <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" style="width: 100%; height: 30%;">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="../../../assets/hospital.jpg" class="d-block w-100" style="height: 30%;" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="../../../assets/hospital-italiano-de-buenos-aires.jpg" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="../../../assets/interior.jpg" class="d-block w-100" alt="...">
+      </div>
+    </div>
+  </div>
+</div> -->

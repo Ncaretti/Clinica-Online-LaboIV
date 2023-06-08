@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "clinica-laboiv-dcd68": {
+      "hosting": {
+        "Clinica-Online": [
+          "clinica-laboiv-dcd68"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "clinica-laboiv-dcd68"
+  }
+}

@@ -1,0 +1,39 @@
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <div *ngIf="true" style="position: absolute;">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="padding-left: 10px;">
+        <li class="nav-item">
+          <a class="btn btn-primary" aria-current="page" routerLink="/bienvenido">Bienvenido</a>
+        </li>
+      </ul>
+    </div>
+      <div class="container">
+        <a class="navbar-brand" style="margin: auto">
+          <img src="../../../assets/honduras.png" alt="" width="40vw">
+        </a>
+      </div>
+  </nav>
+<div class="col-md-4 container" style="display: flex; justify-content: center; padding-top: 10%;">
+    <div class="row g-3">
+        <div class="col-8">
+            Mail
+            <input class="form-control" name="mail" [(ngModel)]="email">
+        </div>
+        <br>
+        <div class="col-8">
+            Contraseña
+            <input class="form-control" type="password" name="pass" [(ngModel)]="pass">
+        </div>
+        <div class="col-12">
+            <button class="btn btn-primary btn-block" (click)="login()">Ingresar</button>
+        </div>
+        <div class="col-3">
+          <button class="btn btn-warning btn-block" (click)="usuariosPrecargados(1)">Admin</button>
+        </div>
+        <div class="col-4">
+          <button class="btn btn-warning btn-block" (click)="usuariosPrecargados(2)">Especialista</button>
+        </div>
+        <div class="col-3">
+          <button class="btn btn-warning btn-block" (click)="usuariosPrecargados(3)">Paciente</button>
+        </div>
+    </div>
+</div>
