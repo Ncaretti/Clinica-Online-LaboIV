@@ -1,0 +1,140 @@
+<div id="{{turno.uid_paciente}}" *ngFor="let turno of arrayTurnos">
+  <div *ngIf="turno.uid_paciente == this.usuarioActual.id" class="contenedor-turno col-8" [ngClass]="obtenerEstado(turno.estado)">
+    <div class="row">
+      <div class="col-12">
+        <img style="float: right" [src]="pathIcono(turno.estado)" width="50px">
+      </div>
+      <div class="col-8">
+        <label class="campos-turno">Estado:</label>
+         {{turno.estado}}
+      </div>
+      <div class="col-8">
+        <label class="campos-turno">Fecha:</label>
+        {{turno.fecha_hora | date: 'short'}}
+      </div>
+      <div class="col-8">
+        <label class="campos-turno">Especialista:</label>
+        {{turno.apellido_esp}}, {{turno.nombre_esp}}. DNI: {{turno.dni_esp}}
+      </div>
+      <div class="col-8">
+        <label class="campos-turno">Especialidad:</label>
+        {{turno.especialidad}}
+      </div>
+      <!---------------------------------------CANCELAR TURNO---------------------------------------------------------------->
+      <div *ngIf="turno.estado == 'espera' || turno.estado == 'aceptado'">
+        <div class="col-12">
+          <button id="{{turno.id + 6}}" (click)="cancelarTurno(turno.id, 'cancelado')" class="btn btn-warning" style="float: right">Cancelar</button>
+        </div>
+      </div>
+
+      <!---------------------------------------TURNO CANCELADO---------------------------------------------------------------->
+      <div *ngIf="estadoBoton.estado == 'cancelado' && estadoBoton.id == turno.id">
+        <div class="col-10 container ubicacion-texto">
+          <input id="{{turno.id + 7}}" placeholder="Ingrese el motivo por el cual cancela el turno" type="text" class="contenedor-mensaje">
+        </div>
+        <div class="col-12">
+          <button (click)="turnoCancelado(turno)" class="btn btn-warning" style="float: right">Cancelar</button>
+        </div>
+      </div>
+      <div *ngIf="turno.estado == 'cancelado'">
+        <div *ngIf="turno.mensajeCancelacionPaciente != null">
+          <div class="col-8">
+            <label class="campos-turno">Motivo cancelacion (pac):</label>
+              {{turno.mensajeCancelacionPaciente}}
+          </div>
+        </div>
+        <div *ngIf="turno.mensajeCancelacionAdmin != null">
+          <div class="col-8">
+            <label class="campos-turno">Motivo cancelacion (admin):</label>
+              {{turno.mensajeCancelacionAdmin}}
+          </div>
+        </div>
+      </div>
+
+      <!---------------------------------------TURNO RECHAZADO---------------------------------------------------------------->
+      <div *ngIf="turno.estado == 'rechazado'">
+        <div class="col-8">
+          <label class="campos-turno">Motivo de rechazo (esp):</label>
+            {{turno.mensajeRechazoEspecialista}}
+        </div>
+      </div>
+
+      <!---------------------------------------TURNO FINALIZADO---------------------------------------------------------------->
+      <div *ngIf="turno.estado == 'finalizado'">
+        <div *ngIf="turno.opinionPaciente != null">
+          <div class="col-8">
+            <label class="campos-turno">Encuesta (pac):</label>
+            {{turno.opinionPaciente}}
+          </div>
+        </div>
+        <div *ngIf="turno.estrellas != null && turno.calificacionAtencion != null">
+          <div class="col-8">
+            <label class="campos-turno">Calificacion (pac):</label>
+            {{turno.calificacionAtencion}} | {{turno.estrellas}}★
+          </div>
+        </div>
+
+        <div *ngIf="this.estadoBoton.estado == null">
+          <button id="{{turno.id + 12}}" (click)="darCalificacion(turno.id, 'resenia', 12)" class="btn btn-secondary" style="float: right">Ver reseña</button>
+          <div *ngIf="turno.opinionPaciente == null">
+            <p style="float: right; visibility: hidden;">a</p>
+            <button id="{{turno.id + 11}}" (click)="darCalificacion(turno.id, 'encuesta', 11)" class="btn btn-warning" style="float: right">Encuesta</button>
+          </div>
+          <div *ngIf="turno.calificacionAtencion == null">
+            <p style="float: right; visibility: hidden;">a</p>
+            <button id="{{turno.id + 10}}" (click)="darCalificacion(turno.id, 'calificar', 10)" class="btn btn-primary" style="float: right">Calificar At.</button>
+          </div>
+        </div>
+
+        <!-------ENCUESTA------>
+        <div *ngIf="estadoBoton.estado == 'encuesta' && estadoBoton.id == turno.id">
+          <div class="col-10 container ubicacion-texto">
+            <label class="campos-turno">Cuentenos su experiencia:</label>
+            <input id="{{turno.id + 8}}" type="text" class="contenedor-mensaje">
+          </div>
+          <div class="col-12">
+            <button (click)="encuestaPaciente(turno)" class="btn btn-warning" style="float: right">Enviar</button>
+          </div>
+        </div>
+
+        <!------RESENIA----->
+        <div *ngIf="estadoBoton.estado == 'resenia' && estadoBoton.id == turno.id">
+          <div class="col-10 container ubicacion-texto">
+            <label class="campos-turno">Diagnostico: {{turno.mensajeDiagnosticoEspecialista}}</label>
+          </div>
+          <div class="col-12">
+            <button (click)="ocultarResenia()" class="btn btn-secondary" style="float: right">Ocultar</button>
+          </div>
+        </div>
+
+        <!-------CALIFICAR ATENCION-------->
+        <div *ngIf="estadoBoton.estado == 'calificar' && estadoBoton.id == turno.id">
+          <div class="col-10 container ubicacion-texto">
+            <input id="{{turno.id + 9}}" placeholder="Cuentenos como fue la atencion" type="text" class="contenedor-mensaje">
+
+            <p class="clasificacion">
+              <input id="radio1" type="radio" name="estrellas" value="5" (click)="this.valorEstrellas = 5">
+              <label for="radio1">★</label>
+              <input id="radio2" type="radio" name="estrellas" value="4" (click)="this.valorEstrellas = 4">
+              <label for="radio2">★</label>
+              <input id="radio3" type="radio" name="estrellas" value="3" (click)="this.valorEstrellas = 3">
+              <label for="radio3">★</label>
+              <input id="radio4" type="radio" name="estrellas" value="2" (click)="this.valorEstrellas = 2">
+              <label for="radio4">★</label>
+              <input id="radio5" type="radio" name="estrellas" value="1" (click)="this.valorEstrellas = 1">
+              <label for="radio5">★</label>
+            </p>
+          </div>
+          <div class="col-12">
+            <button (click)="cargarAtencion(turno, this.valorEstrellas)" class="btn btn-info" style="float: right">Enviar</button>
+          </div>
+        </div>
+
+        <!-- <div class="col-8">
+          <label class="campos-turno">Diagnostico:</label>
+            {{turno.mensajeDiagnosticoEspecialista}}
+        </div> -->
+      </div>
+    </div>
+</div>
+</div>

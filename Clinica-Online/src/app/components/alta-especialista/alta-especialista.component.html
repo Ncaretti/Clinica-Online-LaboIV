@@ -76,7 +76,7 @@
 
 <div class="list-group" style="max-width: 20%; float: right; margin-top: -300px; margin-right: 3%;">
   Elegir especialidad:
-  <button (click)="this.especialidad = 'Odontologo'" class="list-group-item list-group-item-action">Odontologo</button>
-  <a (click)="this.especialidad = 'Cardiologo'" class="list-group-item list-group-item-action">Cardiologo</a>
-  <a (click)="this.especialidad = 'Dentista'" class="list-group-item list-group-item-action">Dentista</a>
+  <button (click)="this.especialidad.push('Odontologo')" class="list-group-item list-group-item-action">Odontologo</button>
+  <a (click)="this.especialidad.push('Cardiologo')" class="list-group-item list-group-item-action">Cardiologo</a>
+  <a (click)="this.especialidad.push('Dentista')" class="list-group-item list-group-item-action">Dentista</a>
 </div>

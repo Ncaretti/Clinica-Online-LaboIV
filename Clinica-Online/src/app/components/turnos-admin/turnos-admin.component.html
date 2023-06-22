@@ -1,0 +1,59 @@
+<div id="{{turno.uid_especialista}}" *ngFor="let turno of arrayTurnos" class="contenedor-turno col-8" [ngClass]="obtenerEstado(turno.estado)">
+<!-- <div *ngIf="turno.uid_especialista == this.usuarioActual.id" class="contenedor-turno col-8" [ngClass]="obtenerEstado(turno.estado)">    -->
+    <div class="row">
+      <div class="col-12">
+        <img style="float: right" [src]="pathIcono(turno.estado)" width="50px">
+      </div>
+      <div class="col-8">
+        <label class="campos-turno">Estado:</label>
+         {{turno.estado}}
+      </div>
+      <div class="col-8">
+        <label class="campos-turno">Fecha:</label>
+        {{turno.fecha_hora | date: 'short'}}
+      </div>
+      <div class="col-8">
+        <label class="campos-turno">Paciente:</label>
+        {{turno.apellido_pac}}, {{turno.nombre_pac}}. DNI: {{turno.dni_pac}}
+      </div>
+      <div class="col-8">
+        <label class="campos-turno">Especialista:</label>
+        {{turno.apellido_esp}}, {{turno.nombre_esp}}. DNI: {{turno.dni_esp}}
+      </div>
+      <div class="col-8">
+        <label class="campos-turno">Especialidad:</label>
+        {{turno.especialidad}}
+      </div>
+
+      <!---------------------------------------CANCELAR TURNO---------------------------------------------------------------->
+      <div *ngIf="turno.estado == 'espera'">
+        <div class="col-12">
+          <button id="{{turno.id + 10}}" (click)="cancelarTurnoAdmin(turno.id, 'cancelado')" class="btn btn-warning" style="float: right">Cancelar</button>
+        </div>
+      </div>
+
+      <!---------------------------------------TURNO CANCELADO---------------------------------------------------------------->
+      <div *ngIf="estadoBoton.estado == 'cancelado' && estadoBoton.id == turno.id">
+        <div class="col-10 container ubicacion-texto">
+          <input id="{{turno.id + 11}}" placeholder="Ingrese el motivo por el cual cancela el turno" type="text" class="contenedor-mensaje">
+        </div>
+        <div class="col-12">
+          <button (click)="turnoCanceladoAdmin(turno)" class="btn btn-warning" style="float: right">Cancelar</button>
+        </div>
+      </div>
+      <div *ngIf="turno.estado == 'cancelado'">
+        <div *ngIf="turno.mensajeCancelacionAdmin != null">
+            <div class="col-8">
+                <label class="campos-turno">Motivo cancelacion (admin):</label>
+                {{turno.mensajeCancelacionAdmin}}
+            </div>
+        </div>
+        <div *ngIf="turno.mensajeCancelacionPaciente != null">
+            <div class="col-8">
+                <label class="campos-turno">Motivo cancelacion (pac):</label>
+                {{turno.mensajeCancelacionPaciente}}
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>

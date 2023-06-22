@@ -1,0 +1,100 @@
+<div id="{{turno.uid_especialista}}" *ngFor="let turno of arrayTurnos">
+  <div *ngIf="turno.uid_especialista == this.usuarioActual.id" class="contenedor-turno col-8" [ngClass]="obtenerEstado(turno.estado)">  
+    <div class="row">
+      <div class="col-12">
+        <img style="float: right" [src]="pathIcono(turno.estado)" width="50px">
+      </div>
+      <div class="col-8">
+        <label class="campos-turno">Estado:</label>
+         {{turno.estado}}
+      </div>
+      <div class="col-8">
+        <label class="campos-turno">Fecha:</label>
+        {{turno.fecha_hora | date: 'short'}}
+      </div>
+      <div class="col-8">
+        <label class="campos-turno">Paciente:</label>
+        {{turno.apellido_pac}}, {{turno.nombre_pac}}. DNI: {{turno.dni_pac}}
+      </div>
+      <div class="col-8">
+        <label class="campos-turno">Especialidad:</label>
+        {{turno.especialidad}}
+      </div>
+      <!---------------------------------------ACEPTAR O RECHAZAR TURNO---------------------------------------------------------------->
+      <div *ngIf="turno.estado == 'espera'">
+        <div class="col-12">
+          <button id="{{turno.id}}" (click)="respuestaTurno(turno, 'aceptado')" class="btn btn-success" style="float: right">Aceptar</button>
+          <p style="float: right; visibility: hidden;">a</p>
+          <button id="{{turno.id + 1}}" (click)="consola(turno.id, 'rechazado')" class="btn btn-danger" style="float: right">Rechazar</button>
+        </div>
+      </div>
+
+      <!---------------------------------------TURNO RECHAZADO---------------------------------------------------------------->
+      <div *ngIf="estadoBoton.estado == 'rechazado' && estadoBoton.id == turno.id">
+        <div class="col-10 container ubicacion-texto">
+          <input id="{{turno.id + 2}}" placeholder="Ingrese el motivo por el cual rechaza el turno" type="text" class="contenedor-mensaje">
+        </div>
+        <div class="col-12">
+          <button (click)="turnoRechazado(turno)" class="btn btn-danger" style="float: right">Rechazar</button>
+        </div>
+      </div>
+      <div *ngIf="turno.estado == 'rechazado'">
+        <div class="col-8">
+          <label class="campos-turno">Motivo de rechazo (esp):</label>
+            {{turno.mensajeRechazoEspecialista}}
+        </div>
+      </div>
+
+      <!---------------------------------------TURNO ACEPTADO---------------------------------------------------------------->
+      <div *ngIf="turno.estado == 'aceptado'">
+        <div class="col-12">
+          <button id="{{turno.id + 3}}" (click)="desactivarFinalizar(turno.id, 'aceptado')" class="btn btn-warning" style="float: right">Finalizar</button>
+        </div>
+      </div>
+      <div *ngIf="estadoBoton.estado == 'aceptado' && estadoBoton.id == turno.id">
+        <div class="col-10 container ubicacion-texto">
+          <input id="{{turno.id + 4}}" placeholder="Diagnostico" type="text" class="contenedor-mensaje">
+        </div>
+        <div class="col-12">
+          <button (click)="turnoFinalizado(turno)" class="btn btn-dark" style="float: right">Finalizar</button>
+        </div>
+      </div>
+
+      <!---------------------------------------TURNO FINALIZADO---------------------------------------------------------------->
+      <div *ngIf="turno.estado == 'finalizado'">
+        <div *ngIf="turno.opinionPaciente != null">
+          <div class="col-8">
+            <label class="campos-turno">Encuesta (pac):</label>
+            {{turno.opinionPaciente}}
+          </div>
+        </div>
+        <div *ngIf="turno.estrellas != null && turno.calificacionAtencion != null">
+          <div class="col-8">
+            <label class="campos-turno">Calificacion (pac):</label>
+            {{turno.calificacionAtencion}} | {{turno.estrellas}}★
+          </div>
+        </div>
+        <div class="col-8">
+          <label class="campos-turno">Diagnostico:</label>
+            {{turno.mensajeDiagnosticoEspecialista}}
+        </div>
+      </div>
+
+      <!---------------------------------------TURNO CANCELADO---------------------------------------------------------------->
+      <div *ngIf="turno.estado == 'cancelado'">
+        <div *ngIf="turno.mensajeCancelacionPaciente != null">
+          <div class="col-8">
+            <label class="campos-turno">Motivo cancelacion (pac):</label>
+              {{turno.mensajeCancelacionPaciente}}
+          </div>
+        </div>
+        <div *ngIf="turno.mensajeCancelacionAdmin != null">
+          <div class="col-8">
+            <label class="campos-turno">Motivo cancelacion (admin):</label>
+              {{turno.mensajeCancelacionAdmin}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

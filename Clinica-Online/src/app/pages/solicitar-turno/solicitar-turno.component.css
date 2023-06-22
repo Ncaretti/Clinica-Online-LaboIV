@@ -1,0 +1,41 @@
+.contenedor{
+    margin-top: 5%;
+    display: flex;
+    /* justify-content: center;
+    align-items: center; */
+    justify-content: space-around;
+}
+
+.especialidad{
+    margin-left: -20%;
+}
+
+@keyframes aparece-izquierda
+{
+    from { 
+         transform: translateX(-100%); 
+         opacity: 0;
+            }
+    to { 
+         transform: translateX(0%); 
+         opacity: 1;
+            }
+}
+
+@keyframes aparece-derecha
+{
+    from { 
+         transform: translateX(100%); 
+         opacity: 0;
+            }
+    to { 
+         transform: translateX(0%); 
+         opacity: 1;
+            }
+}
+ 
+.anim-div
+{
+     animation: aparece-derecha ease 1s backwards; 
+}
+ 

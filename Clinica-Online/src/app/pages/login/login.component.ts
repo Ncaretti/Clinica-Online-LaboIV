@@ -3,6 +3,7 @@ import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { BdService } from 'src/app/services/bd.service';
+import { NotificacionesService } from 'src/app/services/notificaciones.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,7 @@ export class LoginComponent {
   usuarioActual!:any;
   arrayUsuarios!:any;
   
-  constructor(private auth : Auth, private router : Router, private bdService : BdService){}
+  constructor(private mensaje : NotificacionesService ,private auth : Auth, private router : Router, private bdService : BdService){}
 
   ngOnInit()
   {
@@ -33,7 +34,8 @@ export class LoginComponent {
     .then((data)=>{
       if(!data.user.emailVerified)
       {
-        console.log("Deben verificar el mail!!");
+        this.mensaje.alertasLogin("Mail sin verificar.", "error", "Ok");
+        console.log("Debe verificar el mail!!");
         this.auth.signOut;
       }
       else
@@ -41,13 +43,34 @@ export class LoginComponent {
         this.arrayUsuarios.forEach((usuario: any) => {
           if(usuario.mail == this.email && usuario.pass == this.pass)
           {
-            this.bdService.enviarPacienteActivo(usuario);
-            this.router.navigate(['/bienvenido'])
-            console.log("Mail verificado");
             console.log(usuario);
+            if(usuario.perfil == 'especialista' && usuario.estaAprobado == 1)
+            {
+              this.bdService.enviarPacienteActivo(usuario);
+              this.router.navigate(['/bienvenido'])
+              console.log("Mail verificado");
+              console.log("Admin verifico");
+              console.log(usuario);
+            }
+            else if(usuario.perfil != 'especialista')
+            {
+              this.bdService.enviarPacienteActivo(usuario);
+              this.router.navigate(['/bienvenido'])
+              console.log("Mail verificado");
+              console.log("Admin verifico");
+              console.log(usuario);
+            }
+            else
+            {
+              this.mensaje.alertasLogin("Especialista no aprobado.", "error", "Ok");
+              console.log("No esta aprobado");
+            }
           }
         });
       }
+    })
+    .catch((error)=>{
+      this.mensaje.alertasAuth(error.code);
     })
   }
 

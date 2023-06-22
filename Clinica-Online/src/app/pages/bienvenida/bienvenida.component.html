@@ -1,17 +1,40 @@
 <div>
-  <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-    <div *ngIf="usuarioActivo.perfil == 'admin'" style="position: absolute;">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="padding-left: 10px;">
-        <li class="nav-item">
-          <a class="btn btn-primary" aria-current="page" routerLink="/admin-user">Administrar Usuarios</a>
-        </li>
-      </ul>
-    </div>
-      <div class="container">
-        <a class="navbar-brand" style="margin: auto">
-          <img src="../../../assets/honduras.png" alt="" width="40vw">
-        </a>
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+      <img src="../../../assets/honduras.png" alt="" width="40vw">
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <div *ngIf="usuarioActivo.perfil == 'admin'" style="position: absolute;">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="padding-left: 10px;">
+            <li class="nav-item">
+              <a class="btn btn-primary" aria-current="page" routerLink="/admin-user">Administrar Usuarios</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-primary" aria-current="page" routerLink="/mis-turnos">Turnos</a>
+            </li>
+          </ul>
+        </div>
+        <div *ngIf="usuarioActivo.perfil == 'paciente'">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="padding-left: 10px;">
+            <li class="nav-item">
+              <a class="btn btn-primary" aria-current="page" routerLink="/solicitar-turno">Solicitar turno</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-primary" aria-current="page" routerLink="/mis-turnos">Mis turnos</a>
+            </li>
+          </ul>
+        </div>
+        <div *ngIf="usuarioActivo.perfil == 'especialista'">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="padding-left: 10px;">
+            <li class="nav-item">
+              <a class="btn btn-primary" aria-current="page" routerLink="/mis-turnos">Mis turnos</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-primary" aria-current="page" routerLink="/mi-perfil">Mi perfil</a>
+            </li>
+          </ul>
+        </div>
       </div>
+    </div>
   </nav>
   <div class="text-center container-login">
     <div class="login" (click)="irLogin()">

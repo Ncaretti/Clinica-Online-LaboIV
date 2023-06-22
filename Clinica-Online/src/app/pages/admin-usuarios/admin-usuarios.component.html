@@ -1,17 +1,26 @@
-<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-    <div *ngIf="true" style="position: absolute;">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="padding-left: 10px;">
-        <li class="nav-item">
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+  <div class="container-fluid">
+    <img src="../../../assets/honduras.png" alt="" width="40vw">
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav" style="padding-left: 10px;">
+        <li class="nav-item" style="padding-right: 10px;">
           <a class="btn btn-primary" aria-current="page" routerLink="/bienvenido">Bienvenido</a>
         </li>
+        <li class="nav-item">
+          <a class="btn btn-warning" aria-current="page" routerLink="/registro">Registrar Usuario</a>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="#">Pricing</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li> -->
       </ul>
     </div>
-      <div class="container">
-        <a class="navbar-brand" style="margin: auto">
-          <img src="../../../assets/honduras.png" alt="" width="40vw">
-        </a>
-      </div>
+  </div>
 </nav>
+
+
 <table class="table">
     <thead>
       <tr>
@@ -21,6 +30,7 @@
         <th scope="col">Edad</th>
         <th scope="col">Dni</th>
         <th scope="col">Mail</th>
+        <th scope="col">Accion</th>
       </tr>
     </thead>
     <tbody>
@@ -31,7 +41,8 @@
         <td>{{user.edad}}</td>
         <td>{{user.dni}}</td>
         <td>{{user.mail}}</td>
-        <td *ngIf="user.perfil == 'paciente'"><button class="btn btn-warning">Deshabilitar</button></td>
+        <td *ngIf="user.perfil == 'especialista' && user.estaAprobado == 1"><button class="btn btn-warning" (click)="deshabilitarEspecialista(user)">Deshabilitar</button></td>
+        <td *ngIf="user.perfil == 'especialista' && user.estaAprobado == -1"><button class="btn btn-success" (click)="habilitarEspecialista(user)">Habilitar</button></td>
       </tr>
     </tbody>
   </table>

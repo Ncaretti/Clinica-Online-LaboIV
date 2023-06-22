@@ -14,6 +14,13 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { AltaEspecialistaComponent } from './components/alta-especialista/alta-especialista.component';
 import { AltaPacienteComponent } from './components/alta-paciente/alta-paciente.component';
 import { AdminUsuariosComponent } from './pages/admin-usuarios/admin-usuarios.component';
+import { AltaAdminComponent } from './components/alta-admin/alta-admin.component';
+import { SolicitarTurnoComponent } from './pages/solicitar-turno/solicitar-turno.component';
+import { MisTurnosComponent } from './pages/mis-turnos/mis-turnos.component';
+import { MiPerfilComponent } from './pages/mi-perfil/mi-perfil.component';
+import { TurnosPacienteComponent } from './components/turnos-paciente/turnos-paciente.component';
+import { TurnosEspecialistaComponent } from './components/turnos-especialista/turnos-especialista.component';
+import { TurnosAdminComponent } from './components/turnos-admin/turnos-admin.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +30,14 @@ import { AdminUsuariosComponent } from './pages/admin-usuarios/admin-usuarios.co
     RegistroComponent,
     AltaEspecialistaComponent,
     AltaPacienteComponent,
-    AdminUsuariosComponent
+    AdminUsuariosComponent,
+    AltaAdminComponent,
+    SolicitarTurnoComponent,
+    MisTurnosComponent,
+    MiPerfilComponent,
+    TurnosPacienteComponent,
+    TurnosEspecialistaComponent,
+    TurnosAdminComponent
   ],
   imports: [
     BrowserModule,

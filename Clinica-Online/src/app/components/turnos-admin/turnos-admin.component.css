@@ -1,0 +1,83 @@
+.contenedor-turno{
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-bottom: 2%;
+    display: flex;
+    /* justify-content: center; */
+    padding: 10px;
+    /* padding-bottom: 5%;
+    padding-top: 5%; */
+    border: 3px solid black;
+    border-radius: 10px;
+}
+
+.estado-aceptado {
+    border-color: #3CDB7F;
+  }
+  
+  .estado-rechazado {
+    border-color: #FF6174;
+  }
+  
+  .estado-espera {
+    border-color: #2121FB;
+  }
+
+  .estado-finalizado{
+    border-color: #E5E441;
+  }
+
+  .estado-cancelado{
+    border-color: #d89c04;
+  }
+
+.campos-turno{
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 6px;
+}
+
+.contenedor-mensaje{
+
+  border: 2px solid black;
+  width: 100%;
+  text-align: start;
+}
+
+.ubicacion-texto{
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.desactivar-boton{
+  visibility: hidden;
+}
+
+.activar-boton{
+  visibility: visible;
+}
+
+
+
+p.clasificacion {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+p.clasificacion input {
+  position: absolute;
+  top: -100px;
+}
+
+p.clasificacion label {
+  float: right;
+  font-size: 2rem;
+  color: #333;
+}
+
+p.clasificacion label:hover,
+p.clasificacion label:hover ~ label,
+p.clasificacion input:checked ~ label {
+  color: orange;
+}

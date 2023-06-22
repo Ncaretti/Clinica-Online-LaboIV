@@ -1,0 +1,57 @@
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+      <img src="../../../assets/honduras.png" alt="" width="40vw">
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav" style="padding-left: 10px;">
+          <li class="nav-item" style="padding-right: 10px;">
+            <a class="btn btn-primary" aria-current="page" routerLink="/bienvenido">Bienvenido</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+</nav>
+
+
+<div *ngIf="true" class="container-lg col-md-12 col-lg-12" style="background-color: aquamarine; margin-top: 5%;">
+    <div class="row g-1" style="text-align: center;">
+        <div class="col-12" style="background-color: aquamarine; margin-bottom: 50px;">
+            <img [src]="usuarioActual.ImgPerfil_1" width="50px">
+        </div>
+        <div class="col-4">
+            <label>Nombre</label>
+            <br>
+            {{usuarioActual.nombre}}
+        </div>
+        <div class="col-4">
+            <label>Apellido</label>
+            <br>
+            {{usuarioActual.apellido}}
+        </div>
+        <div class="col-4">
+            <label>DNI</label>
+            <br>
+            {{usuarioActual.dni}}
+        </div>
+                <!-------------------------------Segunda columna----------------------------------->
+        <div class="col-4" style="margin-top: 40px;">
+            <label>Edad</label>
+            <br>
+            {{usuarioActual.edad}}
+        </div>
+        <div class="col-4" style="margin-top: 40px;">
+            <label>Correo</label>
+            <br>
+            {{usuarioActual.mail}}
+        </div>
+        <div class="col-12" style="margin-top: 40px;">
+            <label style="margin-bottom: 10px;">Especialidad/es</label>
+            <br>
+            <button (click)="mostrarDias(especialidad)" class="btn btn-warning" *ngFor="let especialidad of usuarioActual.especialidad" style="margin-right: 10px;">{{especialidad}}</button>
+        </div>
+        <div *ngIf="diasEspecialista == true" class="col-12" style="margin-top: 40px;">
+            <label style="margin-bottom: 10px;">Eleccion dias de trabajo para {{guardarEspecialidad}}.</label>
+            <br>
+            <button id="{{dia.dia}}" (click)="estaEnLista(dia.posicion, i)" class="btn btn-success" *ngFor="let dia of diasSemana; let i = index" style="margin-right: 10px;">{{dia.dia}}</button>
+        </div>
+    </div>
+</div>

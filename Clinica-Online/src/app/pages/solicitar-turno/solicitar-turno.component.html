@@ -1,0 +1,45 @@
+<div style="max-width: 100%;">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+        <div class="container-fluid">
+            <img src="../../../assets/honduras.png" alt="" width="40vw">
+            <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav" style="padding-left: 10px;">
+                <li class="nav-item" style="padding-right: 10px;">
+                <a class="btn btn-primary" aria-current="page" routerLink="/bienvenido">Bienvenido</a>
+                </li>
+                <!-- <li class="nav-item">
+                <a class="btn btn-warning" aria-current="page" routerLink="/registro">Registrar Usuario</a>
+                </li> -->
+            </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container-lg col-md-12 col-lg-12" style="margin-top: 5%;">
+        <div class="row g-1" style="text-align: center;">
+            <div class="col-4" style="background-color: aquamarine;">
+                <div class="list-group" style="padding-left: 10px; padding-right: 10px;" *ngFor="let especialidad of arrayEspecialidades">
+                    <button type="button" class="list-group-item list-group-item-action" (click)="mostrarEsp(especialidad)">{{especialidad}}</button>
+                </div>
+            </div>
+            <div *ngIf="mostrarEspecialista == true" class="col-4 anim-div" style="background-color: burlywood;"> 
+                <div class="list-group" style="padding-left: 10px; padding-right: 10px;" *ngFor="let especialista of arrayEspecialistas">
+                    <button type="button" class="list-group-item list-group-item-action" (click)="mostrarTurn(especialista)">{{especialista.apellido}}, {{especialista.nombre}}</button>
+                </div>
+            </div>
+            <div *ngIf="mostrarTurno == true" class="col-4 anim-div" style="background-color: chocolate;">
+                <button *ngFor="let fecha of fechasDisponibles" style="margin: 5px;" (click)="selectFecha(fecha)" class="btn btn-warning">
+                    {{ fecha | date:'dd/MM/yyyy' }}
+                </button>
+            </div>
+            <div *ngIf="fechaSeleccionada" class="col-12 anim-div" style="background-color: chocolate;">
+                <h3 *ngIf="fechaSeleccionada">Horarios disponibles para el {{ fechaSeleccionada | date:'dd/MM/yyyy' }}:</h3>
+                <button (click)="selectHorario(turno)" [disabled]="horarioSeleccionado && horarioSeleccionado.getTime() !== turno.getTime()" style="margin: 5px;" class="btn btn-light" *ngFor="let turno of horariosDisponibles">{{ turno | date:'HH:mm' }}</button>
+            </div>
+            <div *ngIf="horarioSeleccionado != null" class="col-12 anim-div" style="margin-top: 3%;">
+                <button (click)="cargarTurnoBD()" class="btn btn-warning">Cargar turno</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+  

@@ -2,7 +2,10 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Firestore, addDoc, collection, doc, setDoc } from '@angular/fire/firestore';
 import { StorageReference, getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage';
-import { Auth, createUserWithEmailAndPassword, sendEmailVerification } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { RecuperarAdminService } from 'src/app/services/recuperar-admin.service';
+import { BdService } from 'src/app/services/bd.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-alta-especialista',
@@ -11,12 +14,12 @@ import { Auth, createUserWithEmailAndPassword, sendEmailVerification } from '@an
 })
 export class AltaEspecialistaComponent {
 
-  especialidad: string = '';
+  especialidad: string[] = [];
   imagen: string = '';
   usuarioRegistrado!:any;
   public formAltaEspecialista : FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private auth : Auth, private db : Firestore)
+  constructor(private router : Router ,private bd : BdService ,private datosAdmin : RecuperarAdminService ,private formBuilder: FormBuilder, private auth : Auth, private db : Firestore)
   {
     this.formAltaEspecialista = this.formBuilder.group({
       nombre: ['', [Validators.required]],
@@ -67,6 +70,7 @@ export class AltaEspecialistaComponent {
               edad: this.formAltaEspecialista.value.edad,
               dni: this.formAltaEspecialista.value.dni,
               especialidad: this.especialidad,
+              estaAprobado: -1,
               perfil: 'especialista',
               mail: this.formAltaEspecialista.value.mail,
               pass: this.formAltaEspecialista.value.pass,
@@ -75,9 +79,20 @@ export class AltaEspecialistaComponent {
           })
         })
 
-        setTimeout(() => {
-          console.log(this.auth.currentUser);
-        }, 1000);
+        if(this.datosAdmin.datosAdmin != ''){
+          setTimeout(() => {
+            console.log(this.auth.currentUser);
+            this.auth.signOut()
+            .then(()=>{
+              signInWithEmailAndPassword(this.auth, this.datosAdmin.datosAdmin.mail, this.datosAdmin.datosAdmin.pass)
+              .then((usr)=>{
+                this.bd.getUsuario(usr.user.uid);
+                console.log(this.auth.currentUser);
+                this.router.navigate(['/admin-user'])
+              })
+            })
+          }, 1000);
+        }
       }
       else
       {

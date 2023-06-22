@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword } from '@angular/fire/auth';
-import { Firestore, addDoc, collection, doc, setDoc } from '@angular/fire/firestore';
+import { Auth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { StorageReference, getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage';
@@ -8,31 +8,29 @@ import { BdService } from 'src/app/services/bd.service';
 import { RecuperarAdminService } from 'src/app/services/recuperar-admin.service';
 
 @Component({
-  selector: 'app-alta-paciente',
-  templateUrl: './alta-paciente.component.html',
-  styleUrls: ['./alta-paciente.component.css']
+  selector: 'app-alta-admin',
+  templateUrl: './alta-admin.component.html',
+  styleUrls: ['./alta-admin.component.css']
 })
-export class AltaPacienteComponent {
-
-  public formAltaPaciente : FormGroup;
-  img1 : any = "";
-  img2: any = "";
+export class AltaAdminComponent {
+  
+  public formAltaAdmin : FormGroup;
+  imgPerfil : any = "";
   usuarioRegistrado!: any;
 
-  constructor(private router : Router ,private bd : BdService, private datosAdmin : RecuperarAdminService ,private formBuilder: FormBuilder, private db : Firestore, private auth : Auth)
+  constructor(private bd : BdService ,private datosAdmin : RecuperarAdminService ,private auth : Auth ,private router : Router ,private formBuilder: FormBuilder, private authFire : Auth, private db : Firestore)
   {
-    this.formAltaPaciente = this.formBuilder.group({
+    this.formAltaAdmin = this.formBuilder.group({
       nombre: ['', [Validators.required]],
       apellido: ['', [Validators.required]],
       edad: ['', [Validators.required]],
-      dni: ['', [Validators.required]],
-      obraSocial: ['', [Validators.required]],
       mail: ['', [Validators.required]],
+      dni: ['', [Validators.required]],
       pass: ['', [Validators.required]],
     })
   }
 
-  async uploadImage($event: any, opcion: number) 
+  async uploadImage($event: any) 
   {
     const file = $event.target.files[0];
     const path = 'img ' + Date.now() + Math.random() * 10;
@@ -43,25 +41,19 @@ export class AltaPacienteComponent {
     .then(()=>{
       getDownloadURL(storageRef)
       .then((url)=>{
-        if(opcion == 1)
-        {
-          this.img1 = url;
-        }
-        else{
-          this.img2 = url;
-        }
+        this.imgPerfil = url;
       })
     })
   }
 
-  async altaPaciente()
+  async altaAdmin()
   {
-    if(this.img1 != "" && this.img2 != "")
+    if(this.imgPerfil != "")
     {
-      if(this.formAltaPaciente.valid)
+      if(this.formAltaAdmin.valid)
       {
-        console.log(this.formAltaPaciente.value.mail);
-        await createUserWithEmailAndPassword(this.auth, this.formAltaPaciente.value.mail, this.formAltaPaciente.value.pass)
+        console.log(this.formAltaAdmin.value.mail);
+        await createUserWithEmailAndPassword(this.authFire, this.formAltaAdmin.value.mail, this.formAltaAdmin.value.pass)
         .then((data)=>{
           console.log(data.user.email);
           sendEmailVerification(data.user)
@@ -71,23 +63,21 @@ export class AltaPacienteComponent {
             const ref = doc(this.db, 'usuarios', data.user.uid);
             console.log(data.user.uid);
             setDoc(ref, {
-              nombre: this.formAltaPaciente.value.nombre,
-              apellido: this.formAltaPaciente.value.apellido,
-              edad: this.formAltaPaciente.value.edad,
-              dni: this.formAltaPaciente.value.dni,
-              obraSocial: this.formAltaPaciente.value.obraSocial,
-              perfil: 'paciente',
-              mail: this.formAltaPaciente.value.mail,
-              pass: this.formAltaPaciente.value.pass,
-              ImgPerfil_1: this.img1,
-              ImgPerfil_2: this.img2,
+              nombre: this.formAltaAdmin.value.nombre,
+              apellido: this.formAltaAdmin.value.apellido,
+              edad: this.formAltaAdmin.value.edad,
+              dni: this.formAltaAdmin.value.dni,
+              perfil: 'admin',
+              mail: this.formAltaAdmin.value.mail,
+              pass: this.formAltaAdmin.value.pass,
+              ImgPerfil_1: this.imgPerfil,
             }, {merge:true});
-
             //agregar sweetalert que todo salio ok
           })
         })
 
-        if(this.datosAdmin.datosAdmin != ''){
+        if(this.datosAdmin.datosAdmin != '')
+        {
           setTimeout(() => {
             console.log(this.auth.currentUser);
             this.auth.signOut()
@@ -109,7 +99,8 @@ export class AltaPacienteComponent {
     }
     else
     {
-      console.log("falta 1 o las 2 img");
+      console.log("falta la img");
     }
   }
+
 }

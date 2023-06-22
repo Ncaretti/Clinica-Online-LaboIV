@@ -12,8 +12,10 @@
         </a>
       </div>
   </nav>
-<!---------------------------------MENU ELECCION------------------------------------------->
-<div *ngIf="eleccion == 'ninguno'">
+
+<div *ngIf="usuarioActual.perfil != 'admin'">
+  <!---------------------------------MENU ELECCION------------------------------------------->
+  <div *ngIf="eleccion == 'ninguno'">
     <div class="text-center container-login">
         <div class="login" (click)="eleccion = 'especialista'">
           Especialista
@@ -22,14 +24,46 @@
           Paciente
         </div>
     </div>
-</div>
+  </div>
 
-<!---------------------------------PACIENTE------------------------------------------->
-<div *ngIf="eleccion == 'paciente'">
+  <!---------------------------------PACIENTE------------------------------------------->
+  <div *ngIf="eleccion == 'paciente'">
     <app-alta-paciente></app-alta-paciente>
+  </div>
+
+  <!---------------------------------ESPECIALISTA------------------------------------------->
+  <div *ngIf="eleccion == 'especialista'">
+    <app-alta-especialista></app-alta-especialista>
+  </div>
 </div>
 
-<!---------------------------------ESPECIALISTA------------------------------------------->
-<div *ngIf="eleccion == 'especialista'">
+<div *ngIf="usuarioActual.perfil == 'admin'">
+  <!---------------------------------MENU ELECCION------------------------------------------->
+  <div *ngIf="eleccion == 'ninguno'">
+    <div class="text-center container-login">
+        <div class="login" (click)="eleccion = 'especialista'">
+          Especialista
+        </div>
+        <div class="login" (click)="eleccion = 'paciente'">
+          Paciente
+        </div>
+        <div class="login" (click)="eleccion = 'admin'">
+          Administrador
+        </div>
+    </div>
+  </div>
+
+  <!---------------------------------PACIENTE------------------------------------------->
+  <div *ngIf="eleccion == 'paciente'">
+    <app-alta-paciente></app-alta-paciente>
+  </div>
+
+  <!---------------------------------ESPECIALISTA------------------------------------------->
+  <div *ngIf="eleccion == 'especialista'">
     <app-alta-especialista></app-alta-especialista>
+  </div>
+
+  <div *ngIf="eleccion == 'admin'">
+    <app-alta-admin></app-alta-admin>
+  </div>
 </div>
