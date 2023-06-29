@@ -1,3 +1,19 @@
+<!-- <div class="content" role="main">
+  <div class="card">
+    <div class="form-group">
+      <input type="email" class="form-control" id="search-text" aria-describedby="search-text" 
+        [(ngModel)]="searchText" placeholder="Enter text to search" 
+        autofocus>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item" *ngFor="let c of characters | buscador: searchText"
+        appDestacar [searchedWord]="searchText" [content]="c"  
+        [classToApply]="'fuente'" [setTitle]="true">
+        {{c}}
+      </li>
+    </ul>
+  </div>
+</div> -->
 <div id="{{turno.uid_paciente}}" *ngFor="let turno of arrayTurnos">
   <div *ngIf="turno.uid_paciente == this.usuarioActual.id" class="contenedor-turno col-8" [ngClass]="obtenerEstado(turno.estado)">
     <div class="row">

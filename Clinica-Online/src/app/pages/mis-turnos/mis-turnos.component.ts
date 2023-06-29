@@ -10,6 +10,18 @@ import { BdService, Turno } from 'src/app/services/bd.service';
 export class MisTurnosComponent {
 
   usuarioActual : any;
+  title = 'angular-text-search-highlight';
+  searchText = '';
+  characters = [
+    'Ant-Man',
+    'Aquaman',
+    'Asterix',
+    'The Atom',
+    'The Avengers',
+    'Batgirl',
+    'Batman',
+    'Batwoman'
+  ];
 
   constructor(private bd : BdService, private bdFire : Firestore){}
 

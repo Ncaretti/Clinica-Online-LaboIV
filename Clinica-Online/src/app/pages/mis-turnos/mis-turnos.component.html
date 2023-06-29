@@ -1,23 +1,18 @@
-<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-    <div *ngIf="true" style="position: absolute;">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="padding-left: 10px;">
-        <li class="nav-item">
-          <a class="btn btn-primary" aria-current="page" routerLink="/bienvenido">Bienvenido</a>
-        </li>
-      </ul>
+<nav style="background-color: #e3f2fd;" class="navbar navbar-expand-sm navbar-light">
+  <a class="navbar-brand">
+    <img src="../../../assets/honduras.png" alt="" width="40vw" style="margin-left: 5px;">
+  </a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="navbar-collapse justify-content-between collapse" id="navbarSupportedContent">
+    <div  class="navbar-nav me-auto mb-2 mb-lg-0">
     </div>
-      <div class="container">
-        <a class="navbar-brand" style="margin: auto">
-          <img src="../../../assets/honduras.png" alt="" width="40vw">
-        </a>
-      </div>
+    <div class="navbar-nav">
+      <a class="nav-link nav-item" routerLink="/bienvenido">Inicio</a>
+    </div>
+  </div>
 </nav>
-<div>
-  <p>{{this.usuarioActual.perfil}}</p>
-  <p>{{this.usuarioActual.id}}</p>
-  <p>{{this.usuarioActual.nombre}}</p>
-  <p>{{this.usuarioActual.apellido}}</p>
-</div>
 <!---------------------------------------------ADMIN-------------------------------------------------------------------->
 
 <!----Verificar que el usuario sea admin---->

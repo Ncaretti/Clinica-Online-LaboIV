@@ -1,0 +1,11 @@
+.fondo-usuarios{
+    background-image: url('../../../assets/fondo-hospital.jpg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 100%;
+    background-attachment: fixed;
+}
+
+.carta{
+    background-color: rgba(227, 242, 253, 0.6);
+}

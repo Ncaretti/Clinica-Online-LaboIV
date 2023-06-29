@@ -1,0 +1,99 @@
+<div class="fondo">
+    <nav style="background-color: #e3f2fd;" class="navbar navbar-expand-sm navbar-light">
+        <a class="navbar-brand">
+        <img src="../../../assets/honduras.png" alt="" width="40vw" style="margin-left: 5px;">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse justify-content-between collapse" id="navbarSupportedContent">
+        <div  class="navbar-nav me-auto mb-2 mb-lg-0">
+            <a class="nav-link nav-item" routerLink="/admin-user">Administrar Usuarios</a>
+            <a class="nav-link nav-item" routerLink="/mis-turnos">Turnos</a>
+            <a class="nav-link nav-item" routerLink="/usuarios">Usuarios</a>
+        </div>
+        <div class="navbar-nav">
+            <a class="nav-link nav-item" routerLink="/bienvenido">Inicio</a>
+        </div>
+        </div>
+    </nav>
+    <div class="contenedor-opciones">
+        <div class="opcion" style="text-align: center;">
+            <img src="../../../assets/informe.png" width="150px" class="card-link" data-bs-toggle="modal" data-bs-target="#logUsuarios">
+            <br>
+            <label style="font-weight: bold; font-size: 1.1rem;">Logs ingreso</label>
+            <div class="modal fade" id="logUsuarios" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div id="pdfLogs" class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Log de usuarios</h5>
+                    </div>
+                    <div  class="modal-body" *ngFor="let log of arrayLogsIngreso">
+                        <a style="font-weight: bold;">Ingreso:</a> {{log.usuario}} | {{log.fecha_ingreso | date: 'dd/LL/yy - HH:mm'}}<br>
+                    </div>
+                </div>
+                </div>
+                <div>
+                    <button type="button" style="margin-right: 5px;" class="btn btn-warning" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" style="margin-right: 5px;" class="btn btn-danger" (click)="descargarPDFLogs('pdfLogs')">Descargar PDF</button>
+                    <button type="button" class="btn btn-success" (click)="descargarExcelLogs()">Descargar Excel</button>
+                </div>
+            </div>
+        </div>
+        <div class="opcion" style="text-align: center;">
+            <img src="../../../assets/informe.png" width="150px" class="card-link" data-bs-toggle="modal" data-bs-target="#turnosPorEsp">
+            <br>
+            <label style="font-weight: bold; font-size: 1.1rem;">Turnos especialidad</label>
+            <div class="modal fade" id="turnosPorEsp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div id="pdfTurnosEspecialidad" class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Turnos por especialidad</h5>
+                    </div>
+                    <div class="modal-body">
+                        <canvas id="turnosEspecialidad"></canvas>
+                        <br>
+                        <label style="margin-right: 10px;">Cardiologo: {{contadorTurnosEsp[0]}} </label>
+                        <label style="margin-right: 10px;"> Odontologo: {{contadorTurnosEsp[1]}} </label>
+                        <label style="margin-right: 10px;"> Dentista: {{contadorTurnosEsp[2]}} </label>
+                    </div>
+                </div>
+                </div>
+                <div>
+                    <button type="button" style="margin-right: 5px;" class="btn btn-warning" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" style="margin-right: 5px;" class="btn btn-danger" (click)="descargarPDFLogs('pdfTurnosEspecialidad')">Descargar PDF</button>
+                    <button type="button" class="btn btn-success" (click)="descargarExcelTurnosEspecialidad()">Descargar Excel</button>
+                </div>
+            </div>
+        </div>
+        <div class="opcion" style="text-align: center;">
+            <img src="../../../assets/informe.png" width="150px" class="card-link" data-bs-toggle="modal" data-bs-target="#turnosPorDia">
+            <br>
+            <label style="font-weight: bold; font-size: 1.1rem;">Turnos dia</label>
+            <div class="modal fade" id="turnosPorDia" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div id="pdfTurnosDia" class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Turnos por dia</h5>
+                    </div>
+                    <div class="modal-body">
+                        <canvas id="turnosDia"></canvas>
+                        <br>
+                        <label style="margin-right: 10px;">Lunes: {{contadorTurnosDia[0]}}</label>
+                        <label style="margin-right: 10px;">Martes: {{contadorTurnosDia[1]}}</label>
+                        <label style="margin-right: 10px;">Miercoles: {{contadorTurnosDia[2]}}</label>
+                        <label style="margin-right: 10px;">Jueves: {{contadorTurnosDia[3]}}</label>
+                        <label style="margin-right: 10px;">Viernes: {{contadorTurnosDia[4]}}</label>
+                        <label style="margin-right: 10px;">Sabado: {{contadorTurnosDia[5]}}</label>
+                    </div>
+                </div>
+                </div>
+                <div>
+                    <button type="button" style="margin-right: 5px;" class="btn btn-warning" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" style="margin-right: 5px;" class="btn btn-danger" (click)="descargarPDFLogs('pdfTurnosDia')">Descargar PDF</button>
+                    <button type="button" class="btn btn-success" (click)="descargarExcelTurnosDia()">Descargar Excel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,39 +1,49 @@
-<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-    <div *ngIf="true" style="position: absolute;">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="padding-left: 10px;">
-        <li class="nav-item">
-          <a class="btn btn-primary" aria-current="page" routerLink="/bienvenido">Bienvenido</a>
-        </li>
-      </ul>
-    </div>
-      <div class="container">
-        <a class="navbar-brand" style="margin: auto">
-          <img src="../../../assets/honduras.png" alt="" width="40vw">
-        </a>
+<div class="contenedor">
+  <nav style="background-color: rgb(226, 242, 253);" class="navbar navbar-expand-sm navbar-light">
+    <a class="navbar-brand">
+      <img src="../../../assets/honduras.png" alt="" width="40vw" style="margin-left: 5px;">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse justify-content-between collapse" id="navbarSupportedContent">
+      <div class="navbar-nav me-auto mb-2 mb-lg-0">
       </div>
-  </nav>
-<div class="col-md-4 container" style="display: flex; justify-content: center; padding-top: 10%;">
-    <div class="row g-3">
-        <div class="col-8">
-            Mail
-            <input class="form-control" name="mail" [(ngModel)]="email">
-        </div>
-        <br>
-        <div class="col-8">
-            Contraseña
-            <input class="form-control" type="password" name="pass" [(ngModel)]="pass">
-        </div>
-        <div class="col-12">
-            <button class="btn btn-primary btn-block" (click)="login()">Ingresar</button>
-        </div>
-        <div class="col-3">
-          <button class="btn btn-warning btn-block" (click)="usuariosPrecargados(1)">Admin</button>
-        </div>
-        <div class="col-4">
-          <button class="btn btn-warning btn-block" (click)="usuariosPrecargados(2)">Especialista</button>
-        </div>
-        <div class="col-3">
-          <button class="btn btn-warning btn-block" (click)="usuariosPrecargados(3)">Paciente</button>
-        </div>
+      <div class="navbar-nav">
+        <button class="nav-link nav-item" routerLink="/bienvenido">Inicio</button>
+      </div>
     </div>
+  </nav>
+
+  <div class="container-carta">
+    <div class="card carta" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title" style="text-align: center;"><img src="../../../assets/honduras.png" height="50px"></h5>
+        <h2 class="card-title" style="text-align: center; font-weight: bold;">Ingresar</h2>
+        <label style="font-weight: bold;">Correo</label>
+        <br>
+        <input type="text" class="form-control" placeholder="ejemplo@ejemplo.com" name="mail" [(ngModel)]="email" style="width: 100%;">
+        <br>
+        <label style="font-weight: bold;">Pass</label>
+        <br>
+        <input type="password" class="form-control" placeholder="******"  name="pass" [(ngModel)]="pass" style="width: 100%;">
+        <br>
+        <button class="btn btn-warning" (click)="login()" style="width: 100%; margin-top: 5%;">Ingresar</button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="show == true" class="text-center" style="margin-top: 2%;">
+    <div class="spinner-border text-light" style="display: flex; justify-content: center;" style="width: 4rem; height: 4rem;" role="status"></div>
+  </div>
+  <div class="contenedor-accRapido">
+    <div *ngFor="let user of arrayAccesoRapido" style="padding: 5px; text-align: center; ">
+      <div (click)="cargarUserPass(user)">
+        <img  [src]="user.ImgPerfil_1" width="70px" height="70px" style="border-radius: 50%; border: 1px solid black; background-color: white;">
+        <br>
+        <label style="font-size: medium; font-weight: bold;">{{user.nombre}} {{user.apellido}}</label>
+        <br>
+        <label style="font-size: medium; font-weight: bold;">{{user.perfil}}</label>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,64 +1,59 @@
-<div>
-  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
-    <div class="container-fluid">
-      <img src="../../../assets/honduras.png" alt="" width="40vw">
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <div *ngIf="usuarioActivo.perfil == 'admin'" style="position: absolute;">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="padding-left: 10px;">
-            <li class="nav-item">
-              <a class="btn btn-primary" aria-current="page" routerLink="/admin-user">Administrar Usuarios</a>
-            </li>
-            <li class="nav-item">
-              <a class="btn btn-primary" aria-current="page" routerLink="/mis-turnos">Turnos</a>
-            </li>
-          </ul>
-        </div>
-        <div *ngIf="usuarioActivo.perfil == 'paciente'">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="padding-left: 10px;">
-            <li class="nav-item">
-              <a class="btn btn-primary" aria-current="page" routerLink="/solicitar-turno">Solicitar turno</a>
-            </li>
-            <li class="nav-item">
-              <a class="btn btn-primary" aria-current="page" routerLink="/mis-turnos">Mis turnos</a>
-            </li>
-          </ul>
-        </div>
-        <div *ngIf="usuarioActivo.perfil == 'especialista'">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="padding-left: 10px;">
-            <li class="nav-item">
-              <a class="btn btn-primary" aria-current="page" routerLink="/mis-turnos">Mis turnos</a>
-            </li>
-            <li class="nav-item">
-              <a class="btn btn-primary" aria-current="page" routerLink="/mi-perfil">Mi perfil</a>
-            </li>
-          </ul>
-        </div>
-      </div>
+<nav style="background-color: rgb(227, 242, 253);" class="navbar navbar-expand-sm navbar-light">
+  <a class="navbar-brand">
+    <img src="../../../assets/honduras.png" alt="" width="40vw" style="margin-left: 5px;">
+  </a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div *ngIf="usuarioActivo.perfil == 'paciente'" class="navbar-collapse justify-content-between collapse" id="navbarSupportedContent">
+    <div  class="navbar-nav me-auto mb-2 mb-lg-0">
+      <a class="nav-link nav-item" routerLink="/solicitar-turno">Solicitar Turno</a>
+      <a class="nav-link nav-item" routerLink="/mis-turnos">Mis Turnos</a>
+      <a class="nav-link nav-item" routerLink="/mi-perfil">Mi Perfil</a>
     </div>
-  </nav>
+    <div class="navbar-nav">
+      <button class="nav-link nav-item" (click)="cerrarSesion()">Cerrar Sesion</button>
+    </div>
+  </div>
+  <div *ngIf="usuarioActivo.perfil == 'admin'" class="navbar-collapse justify-content-between collapse" id="navbarSupportedContent">
+    <div  class="navbar-nav me-auto mb-2 mb-lg-0">
+      <a class="nav-link nav-item" routerLink="/admin-user">Administrar Usuarios</a>
+      <a class="nav-link nav-item" routerLink="/mis-turnos">Turnos</a>
+      <a class="nav-link nav-item" routerLink="/usuarios">Usuarios</a>
+      <a class="nav-link nav-item" routerLink="/informes">Informes</a>
+    </div>
+    <div class="navbar-nav">
+      <button class="nav-link nav-item" (click)="cerrarSesion()">Cerrar Sesion</button>
+    </div>
+  </div>
+  <div *ngIf="usuarioActivo.perfil == 'especialista'" class="navbar-collapse justify-content-between collapse" id="navbarSupportedContent">
+    <div class="navbar-nav me-auto mb-2 mb-lg-0">
+      <a class="nav-link nav-item" routerLink="/mis-turnos">Mis Turnos</a>
+      <a class="nav-link nav-item" routerLink="/mi-perfil">Mi Perfil</a>
+      <a class="nav-link nav-item" routerLink="/pacientes">Pacientes</a>
+    </div>
+    <div class="navbar-nav">
+      <button class="nav-link nav-item" (click)="cerrarSesion()">Cerrar Sesion</button>
+    </div>
+  </div>
+</nav>
+
+<div *ngIf="this.usuarioActivo.mail == ''" class="container-userNOLog">
   <div class="text-center container-login">
     <div class="login" (click)="irLogin()">
-      Login
+      <h3 class="texto-boton">Login</h3>
     </div>
     <div class="login" (click)="irRegistrar()">
-      Registrar
+      <h3 class="texto-boton">Registrar</h3>
     </div>
   </div>
 </div>
 
-
-<!-- <div class="carrusel" style="background-color: aquamarine;">
-  <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" style="width: 100%; height: 30%;">
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="../../../assets/hospital.jpg" class="d-block w-100" style="height: 30%;" alt="...">
-      </div>
-      <div class="carousel-item">
-        <img src="../../../assets/hospital-italiano-de-buenos-aires.jpg" class="d-block w-100" alt="...">
-      </div>
-      <div class="carousel-item">
-        <img src="../../../assets/interior.jpg" class="d-block w-100" alt="...">
-      </div>
-    </div>
+<div *ngIf="this.usuarioActivo.mail != ''" class="container-userLog">
+  <div style="margin-top: 7%; text-align: center; background-color: rgba(0, 0, 0, 0.3); margin-bottom: 10%;
+    border: 1px solid black; border-radius: 5px;">
+    <img src="../../../assets/honduras.png" width="150px" style="margin-bottom: 2%; margin-top: 2%;">
+    <h1 style="font-weight: bold; font-size: 4rem; color: #e3f2fd; -webkit-text-stroke: 2px rgb(0, 0, 0);">- Bienvenido {{usuarioActivo.nombre}} {{usuarioActivo.apellido}} -</h1>
+    <h2 style="font-weight: bold; font-size: 3rem; color: #e3f2fd; -webkit-text-stroke: 2px rgb(0, 0, 0);">Perfil - {{usuarioActivo.perfil}}</h2>
   </div>
-</div> -->
+</div>

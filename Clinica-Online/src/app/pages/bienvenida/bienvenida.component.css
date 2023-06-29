@@ -7,16 +7,48 @@
 
 .container-login{
     padding-top: 12%;
+    padding: 5%;
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
+    border: 2px solid black;
+    border-radius: 5px;
+    width: 100%;
+    /* margin-left: 10%;
+    margin-right: 10%; */
+    margin: 10%;
     align-items: center;
     justify-content: center;
 }
 
 .login{
-    width: 15%;
-    padding-top: 8%;
-    background-color: rgb(0, 255, 149);
-    height: 250px;
+    width: 100%;
+    padding: 5%;
+    background-color: rgba(227, 242, 253, 0.7);
+    border: 2px solid black;
+    border-radius: 5px;
     margin-left: 4%;
     margin-right: 4%;
+}
+
+.texto-boton{
+    font-weight: bold;
+    font-size: 2.5rem;
+}
+
+.container-userLog{
+    background-image: url('../../../assets/interior.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 89.4vh;
+    display: flex;
+    justify-content: center;
+}
+
+.container-userNOLog{
+    background-image: url('../../../assets/hospital.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 89.4vh;
+    display: flex;
+    justify-content: center;
 }

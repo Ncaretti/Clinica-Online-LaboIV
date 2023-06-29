@@ -1,0 +1,77 @@
+<!--EL NAV-->
+<nav style="background-color: #e3f2fd;" class="navbar navbar-expand-sm navbar-light">
+    <a class="navbar-brand">
+        <img src="../../../assets/honduras.png" alt="" width="40vw" style="margin-left: 5px;">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse justify-content-between collapse" id="navbarSupportedContent">
+        <div class="navbar-nav me-auto mb-2 mb-lg-0">
+        <a class="nav-link nav-item" routerLink="/mis-turnos">Mis Turnos</a>
+        <a class="nav-link nav-item" routerLink="/mi-perfil">Mi Perfil</a>
+        </div>
+        <div class="navbar-nav">
+        <button class="nav-link nav-item" routerLink="/bienvenido">Inicio</button>
+        </div>
+    </div>
+</nav>
+<div *ngFor="let paciente of arrayPacientes" class="contenedor-historial">
+    <div class="card border-dark" style="width: 18rem;">
+        <img class="card-img-top" [src]="paciente.ImgPerfil_1" alt="Card image cap" style="padding: 10px; border-bottom: 1px solid black;">
+        <div class="card-body">
+            <h5 class="card-title" style="text-align: center;">{{paciente.apellido}}, {{paciente.nombre}}</h5>
+        </div>
+        <div *ngFor="let historial of arrayHistorial">
+            <ul class="list-group list-group-flush"  *ngIf="paciente.id == historial.uid_paciente">
+                <li style="border-top: 1px solid black; background-color: bisque;" class="list-group-item"><a class="card-link" data-bs-toggle="modal" [attr.data-bs-target]="'#'+historial.id">{{historial.fecha_turno | date: 'dd/LL/yy, HH:mm a'}}</a></li>
+            </ul>
+            <div class="modal fade" id="{{historial.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Historia Clinica de {{paciente.apellido}}, {{paciente.nombre}}.<br>Fecha: {{historial.fecha_turno | date: 'dd/LL/yy, HH:mm a'}}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <a style="font-weight: bold;">Temperatura:</a> {{historial.temperatura}}<br>
+                        <a style="font-weight: bold;">Peso:</a> {{historial.peso}}<br>
+                        <a style="font-weight: bold;">Altura:</a> {{historial.altura}}<br>
+                        <a style="font-weight: bold;">Presion:</a> {{historial.presion}}<br>
+                        <a style="font-weight: bold;">{{historial.clave}}:</a> {{historial.valor}}<br>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body" style="border-top: 1px solid black;">
+            <button type="button" (click)="historialCompleto(paciente.id)" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#probando" >
+                Historial Completo
+            </button>
+            <div class="modal fade" id="probando" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Historia Clinica de {{paciente.apellido}}, {{paciente.nombre}}</h5>
+                    </div>
+                    <div class="modal-body" *ngFor="let histUnico of arrayHistorialUnico">
+                        <a style="font-weight: bold;">Fecha:</a> {{histUnico.fecha_turno | date: 'dd/LL/yy, HH:mm a'}}<br>
+                        <a style="font-weight: bold;">Temperatura:</a> {{histUnico.temperatura}}<br>
+                        <a style="font-weight: bold;">Peso:</a> {{histUnico.peso}}<br>
+                        <a style="font-weight: bold;">Altura:</a> {{histUnico.altura}}<br>
+                        <a style="font-weight: bold;">Presion:</a> {{histUnico.presion}}<br>
+                        <a style="font-weight: bold;">{{histUnico.clave}}:</a> {{histUnico.valor}}<br><br>
+                        <a>---------------------------------------------------------------------</a>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

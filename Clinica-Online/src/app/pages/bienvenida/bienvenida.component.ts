@@ -20,7 +20,7 @@ export class BienvenidaComponent {
     console.log(this.bdService.$getPacienteActivo);
     console.log(this.authBd.currentUser);
     this.bdService.$getPacienteActivo.subscribe(data => this.usuarioActivo = data);
-    console.log(this.usuarioActivo.perfil);
+    console.log(this.usuarioActivo);
   }
 
   irLogin(){
@@ -29,5 +29,16 @@ export class BienvenidaComponent {
 
   irRegistrar(){
     this.router.navigate(['/registro']);
+  }
+
+  cerrarSesion(){
+    console.log(this.authBd.currentUser);
+    this.authBd.signOut()
+    .then(()=>
+    {
+      console.log(this.authBd.currentUser);
+      this.usuarioActivo = this.bdService.pacienteNulo;
+      console.log(this.usuarioActivo);
+    })
   }
 }

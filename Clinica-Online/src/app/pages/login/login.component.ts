@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { BdService } from 'src/app/services/bd.service';
+import { BdService, Usuario } from 'src/app/services/bd.service';
 import { NotificacionesService } from 'src/app/services/notificaciones.service';
 
 @Component({
@@ -15,17 +15,25 @@ export class LoginComponent {
   email : any;
   pass : any
   usuarioActual!:any;
-  arrayUsuarios!:any;
+  arrayUsuarios: Usuario[] = [];
+  show: boolean = false
+
+  arrayAccesoRapido: any[] = [];
   
   constructor(private mensaje : NotificacionesService ,private auth : Auth, private router : Router, private bdService : BdService){}
 
   ngOnInit()
   {
+    this.show = true;
     Promise.all([
       firstValueFrom(this.bdService.getUsuarios())
     ]).then(([usuarios]) =>{
       this.arrayUsuarios = usuarios;
-    })
+      setTimeout(()=>{
+        this.cargarUsuariosAccRapido();
+        this.show = false;
+      }, 500)
+    });
   }
 
   login()
@@ -51,6 +59,8 @@ export class LoginComponent {
               console.log("Mail verificado");
               console.log("Admin verifico");
               console.log(usuario);
+              let user = usuario.nombre + " " + usuario.apellido;
+              this.bdService.uploadLogIngreso({usuario: user ,fecha_ingreso: Date.now()})
             }
             else if(usuario.perfil != 'especialista')
             {
@@ -59,6 +69,8 @@ export class LoginComponent {
               console.log("Mail verificado");
               console.log("Admin verifico");
               console.log(usuario);
+              let user = usuario.nombre + " " + usuario.apellido;
+              this.bdService.uploadLogIngreso({usuario: user ,fecha_ingreso: Date.now()})
             }
             else
             {
@@ -74,20 +86,51 @@ export class LoginComponent {
     })
   }
 
-  usuariosPrecargados(opcion: number) {
-    switch (opcion) {
-      case 1:
-          this.email = 'admin@mailna.co';
-          this.pass = 'asd123';
-      break;
-      case 2:
-          this.email = 'especialista@mailna.co';
-          this.pass = 'asd123';
-      break;
-      case 3:
-          this.email = 'nowohay914@onlcool.com';
-          this.pass = 'asd123';
-      break;
-    }
-  } 
+  cargarUsuariosAccRapido(){
+    //admin
+    this.bdService.getUsuario('s3fGenIkc2W9ORiwIpHZqij1m9X2')
+    .then((user)=>{
+      this.arrayAccesoRapido.push(user.data())
+    })
+
+    //esp 1
+    this.bdService.getUsuario('yecvzR3ejVWo0lBjQLDJvwHhmAF2')
+    .then((user)=>{
+      this.arrayAccesoRapido.push(user.data())
+    })
+
+    //esp 2
+    this.bdService.getUsuario('OPJO9JgAp7QehZLSWjMaIHETZcn1')
+    .then((user)=>{
+      this.arrayAccesoRapido.push(user.data())
+    })
+
+    //pac 1
+    this.bdService.getUsuario('TVY9rpXtjKdunCs9lROk9ZTM4lh2')
+    .then((user)=>{
+      this.arrayAccesoRapido.push(user.data())
+    })
+
+    //pac 2
+    this.bdService.getUsuario('HYDeXW5MpvXOe9psl0Whkewsm6o2')
+    .then((user)=>{
+      this.arrayAccesoRapido.push(user.data())
+    })
+
+    //pac 3
+    this.bdService.getUsuario('EuThQeCER1Xfl7DBjZD92rwdv2v2')
+    .then((user)=>{
+      this.arrayAccesoRapido.push(user.data())
+    })
+
+    setTimeout(()=>{
+      console.log(this.arrayAccesoRapido);
+    }, 300)
+  }
+
+  cargarUserPass(user : Usuario)
+  {
+    this.email = user.mail;
+    this.pass = user.pass;
+  }
 }

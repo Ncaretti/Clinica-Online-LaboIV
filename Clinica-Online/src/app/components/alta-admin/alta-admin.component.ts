@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { StorageReference, getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage';
 import { BdService } from 'src/app/services/bd.service';
+import { NotificacionesService } from 'src/app/services/notificaciones.service';
 import { RecuperarAdminService } from 'src/app/services/recuperar-admin.service';
 
 @Component({
@@ -18,7 +19,7 @@ export class AltaAdminComponent {
   imgPerfil : any = "";
   usuarioRegistrado!: any;
 
-  constructor(private bd : BdService ,private datosAdmin : RecuperarAdminService ,private auth : Auth ,private router : Router ,private formBuilder: FormBuilder, private authFire : Auth, private db : Firestore)
+  constructor(private mensaje : NotificacionesService, private bd : BdService ,private datosAdmin : RecuperarAdminService ,private auth : Auth ,private router : Router ,private formBuilder: FormBuilder, private authFire : Auth, private db : Firestore)
   {
     this.formAltaAdmin = this.formBuilder.group({
       nombre: ['', [Validators.required]],
@@ -73,6 +74,7 @@ export class AltaAdminComponent {
               ImgPerfil_1: this.imgPerfil,
             }, {merge:true});
             //agregar sweetalert que todo salio ok
+            this.mensaje.alertas("Registro exitoso!", 'success');
           })
         })
 
@@ -94,11 +96,13 @@ export class AltaAdminComponent {
       }
       else
       {
+        this.mensaje.alertas("Complete/valide todos los campos.", 'error');
         console.log("falta validar campos");
       }
     }
     else
     {
+      this.mensaje.alertas("Falta imagen.", 'error');
       console.log("falta la img");
     }
   }

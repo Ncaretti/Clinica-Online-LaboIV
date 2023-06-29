@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { Firestore, doc, setDoc } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, doc, setDoc } from '@angular/fire/firestore';
 import { BdService, Turno } from 'src/app/services/bd.service';
+import { NotificacionesService } from 'src/app/services/notificaciones.service';
 
 @Component({
   selector: 'app-turnos-especialista',
@@ -13,22 +14,22 @@ export class TurnosEspecialistaComponent {
   usuarioActual : any;
   icono!:string;
   estadoBoton: any = {};
-  verResenia: boolean = false;
-  verEncuesta: boolean = false;
-  verAtencion: boolean = false;
   valorEstrellas : number = 0;
 
-  constructor(private bd : BdService, private bdFire : Firestore){}
+  peso!: number;
+  altura!: number;
+  temperatura!: number;
+  presion!: number;
+  clave: string = '';
+  valor: string = '';
+
+  constructor(private bd : BdService, private bdFire : Firestore, private mensaje : NotificacionesService){}
 
   async ngOnInit()
   {
     this.arrayTurnos = [];
     this.bd.$getPacienteActivo.subscribe(data => this.usuarioActual = data);
     this.bd.getTurnos().subscribe(data => this.arrayTurnos = data);
-    setTimeout(()=>{
-      console.log(this.usuarioActual);
-      console.log(this.arrayTurnos);
-    }, 200)
   }
 
 
@@ -123,4 +124,58 @@ export class TurnosEspecialistaComponent {
     this.estadoBoton = {id: id, estado: estado};
     console.log(this.estadoBoton);
   }
+
+  desactivarGenerico(id: any, estado: string, suma: number)
+  {
+    (document.getElementById(id + suma) as HTMLInputElement).className = "desactivar-boton";
+    this.estadoBoton = {id: id, estado: estado};
+    console.log(this.estadoBoton);
+  }
+
+  cargarHistClinica(turno: Turno)
+  {
+    if(this.peso != undefined && this.altura != undefined && this.temperatura != undefined && 
+    this.presion != undefined && this.clave != '' && this.valor != '')
+    {
+      const ref = collection(this.bdFire, 'historiaClinica');
+      const refTurnos = doc(this.bdFire, 'turnos', turno.id);
+      let fecha = Date.now();
+      // let fotoPaciente = this.bd.getFotoPaciente(turno.uid_paciente);
+
+      this.bd.getUsuario(turno.uid_paciente)
+      .then((usr)=>{
+        addDoc(ref, {
+          temperatura: this.temperatura,
+          peso: this.peso,
+          altura: this.altura,
+          presion: this.presion,
+          clave: this.clave,
+          valor: this.valor,
+          fecha_cargaHist: fecha,
+          fecha_turno: turno.fecha_hora,
+          uid_paciente: turno.uid_paciente,
+          uid_especialista: turno.uid_especialista,
+          foto_paciente: usr.data()?.ImgPerfil_1,
+          nombre_paciente: usr.data()?.nombre,
+          apellido_paciente: usr.data()?.apellido,
+          especialidad: turno.especialidad
+        })
+        .then(()=>{
+          setDoc(refTurnos, {
+            tieneHistClinico: true
+          }, {merge: true})
+          .then(()=>{
+            this.mensaje.alertas('Historial clinico cargado con exito.', 'success');
+            this.estadoBoton = {};
+          })
+        })
+      })
+    }
+    else
+    {
+      this.mensaje.alertas('Complete todos los campos', 'error');
+    }
+  }
+
+
 }

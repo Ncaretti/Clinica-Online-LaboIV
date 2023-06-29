@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { Firestore, addDoc, collection, doc, getDoc, setDoc } from '@angular/fire/firestore';
-import { BdService } from 'src/app/services/bd.service';
+import { BdService, Especialidad, HistClinico } from 'src/app/services/bd.service';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-mi-perfil',
@@ -17,13 +19,47 @@ export class MiPerfilComponent {
   diasSeleccionados: any[] = [];
   arrayDiasEspecialistas: any[] =[];
 
+  arrayEspecialidades: Especialidad[] = [];
+  arrayHistClinico: HistClinico[] = [];
+  auxArrayHist: HistClinico[] = [];
+
   constructor(private firestore : Firestore ,private bdService : BdService, private bd : Firestore){}
 
   ngOnInit()
   {
+    let arrayTemportal = [];
     this.bdService.$getPacienteActivo.subscribe(data => this.usuarioActual = data);
+    this.bdService.getHistClinico().subscribe((data)=>{
+      let otroArray = data;
+
+      otroArray.forEach((hist)=>{
+        if(!this.arrayHistClinico.includes(hist) && hist.uid_paciente == this.usuarioActual.id)
+        {
+          this.arrayHistClinico.push(hist);
+        }
+      })
+    });
+    this.bdService.getEspecialidades().subscribe((data)=>{
+      arrayTemportal = data;
+      arrayTemportal.forEach((esp)=>{
+        for(let i = 0; i  < esp.especialidades.length; i++)
+        {
+          for(let j = 0; j < this.arrayHistClinico.length; j++)
+          {
+            if(esp.especialidades[i] == this.arrayHistClinico[j].especialidad && !this.arrayEspecialidades.includes(esp.especialidades[i]))
+            {
+              this.arrayEspecialidades.push(esp.especialidades[i]);
+            }
+          }
+        }
+      })
+    });
+    this.auxArrayHist = this.arrayHistClinico;
+    console.log(this.arrayHistClinico);
   }
 
+
+  //ESPECIALISTA
   async getDiasElegidos(especialidad: string): Promise<any[]> {
     this.diasSeleccionados = [];
     const nombrePropiedad = 'diasElegidos' + especialidad;
@@ -98,11 +134,11 @@ export class MiPerfilComponent {
     if(!esta)
     {
       this.diasSeleccionados.push(indice + 1);
-      document.getElementsByTagName('button')[(indice + 2)]!.className = "btn btn-danger";
+      document.getElementsByTagName('button')[(indice + (this.usuarioActual.especialidad.length))]!.className = "btn btn-danger";
     }
     else{
       this.diasSeleccionados.splice(j, 1);
-      document.getElementsByTagName('button')[(indice + 2)]!.className = "btn btn-success";
+      document.getElementsByTagName('button')[(indice + (this.usuarioActual.especialidad.length))]!.className = "btn btn-success";
     }
 
     const ref = doc(this.bd, 'especialistas', this.usuarioActual.id);
@@ -112,4 +148,68 @@ export class MiPerfilComponent {
     // console.log(this.diasSeleccionados);
     // console.log(dia);
   }
+
+
+  //PACIENTE
+  filtroEspecialidad(id: any, esp: any)
+  {
+    console.log(esp);
+    console.log(document.getElementsByTagName('button')[(id + 1)]);
+    if((document.getElementsByTagName('button')[(id + 1)] as HTMLInputElement).className == "btn btn-danger ng-star-inserted")
+    {
+      (document.getElementsByTagName('button')[(id + 1)] as HTMLInputElement).className = "btn btn-primary ng-star-inserted";
+      this.arrayHistClinico = [];
+      this.arrayHistClinico = this.auxArrayHist;
+    }
+    else if((document.getElementsByTagName('button')[(id + 1)] as HTMLInputElement).className == "btn btn-primary ng-star-inserted")
+    {
+      console.log("entre");
+      let arrayAux = this.auxArrayHist;
+      this.arrayHistClinico = [];
+      (document.getElementsByTagName('button')[(id + 1)] as HTMLInputElement).className = "btn btn-danger ng-star-inserted";
+      for(let i = 0; i < arrayAux.length; i++)
+      {
+        if(arrayAux[i].especialidad == esp && !this.arrayHistClinico.includes(arrayAux[i]))
+        {
+          this.arrayHistClinico.push(arrayAux[i]);
+        }
+      }
+      console.log(this.arrayHistClinico);
+    }
+  }
+
+  crearPDF() {
+    const DATA = document.getElementById('pdf');
+    const doc = new jsPDF('p', 'pt', 'a4');
+    const options = {
+      background: 'white',
+      scale: 2,
+    };
+    //@ts-ignore
+    html2canvas(DATA, options)
+      .then((canvas : any) => {
+        const img = canvas.toDataURL('image/PNG');
+
+        const bufferX = 30;
+        const bufferY = 30;
+        const imgProps = (doc as any).getImageProperties(img);
+        const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX;
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        doc.addImage(
+          img,
+          'PNG',
+          bufferX,
+          bufferY,
+          pdfWidth,
+          pdfHeight,
+          undefined,
+          'FAST'
+        );
+        return doc;
+      })
+      .then((docResult) => {
+        docResult.save(`historial_clinico.pdf`);
+      });
+  }
+
 }

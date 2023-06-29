@@ -56,7 +56,7 @@
 
       <div class="col-4">
         <label for="address2" class="form-label">Especialidad</label>
-        <label type="text" class="form-control" name="txtEsp">{{this.especialidad}}</label>
+        <label id="especialidades" type="text" class="form-control" name="txtEsp">{{this.especialidadesConcatenadas}}</label>
       </div>
 
       <div class="col-md-12">
@@ -76,7 +76,7 @@
 
 <div class="list-group" style="max-width: 20%; float: right; margin-top: -300px; margin-right: 3%;">
   Elegir especialidad:
-  <button (click)="this.especialidad.push('Odontologo')" class="list-group-item list-group-item-action">Odontologo</button>
-  <a (click)="this.especialidad.push('Cardiologo')" class="list-group-item list-group-item-action">Cardiologo</a>
-  <a (click)="this.especialidad.push('Dentista')" class="list-group-item list-group-item-action">Dentista</a>
+  <button (click)="cargarEspecialidades('Odontologo')" class="list-group-item list-group-item-action">Odontologo</button>
+  <a (click)="cargarEspecialidades('Cardiologo')" class="list-group-item list-group-item-action">Cardiologo</a>
+  <a (click)="cargarEspecialidades('Dentista')" class="list-group-item list-group-item-action">Dentista</a>
 </div>

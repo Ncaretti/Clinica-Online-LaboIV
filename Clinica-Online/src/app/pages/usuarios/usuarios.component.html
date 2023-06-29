@@ -1,0 +1,36 @@
+<div class="fondo-usuarios">
+    <nav style="background-color: #e3f2fd;" class="navbar navbar-expand-sm navbar-light">
+        <a class="navbar-brand">
+            <img src="../../../assets/honduras.png" alt="" width="40vw" style="margin-left: 5px;">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse justify-content-between collapse" id="navbarSupportedContent">
+            <div  class="navbar-nav me-auto mb-2 mb-lg-0">
+            <a class="nav-link nav-item" routerLink="/admin-user">Administrar Usuarios</a>
+            <a class="nav-link nav-item" routerLink="/mis-turnos">Turnos</a>
+            <a class="nav-link nav-item" routerLink="/informes">Informes</a>
+            </div>
+            <div class="navbar-nav">
+            <a class="nav-link nav-item" routerLink="/bienvenido">Inicio</a>
+            </div>
+        </div>
+    </nav>
+    <div style="display: grid; justify-content: center; margin-top: 2%; margin-bottom: 2%;">
+        <h3>Descargar datos completos: </h3>
+        <button class="btn btn-primary" (click)="descargarExcel()">Descarga</button>
+    </div>
+    <div style="display: grid; justify-content: center;" *ngFor="let user of arrayUsuarios">
+        <div class="card carta" style="width: 18rem; margin-top: 5%;">
+            <img class="card-img-top" [src]="user.ImgPerfil_1" height="250px" alt="Card image cap">
+            <div class="card-body">
+            <h5 class="card-title" style="text-align: center; font-weight: bold;">{{user.nombre}} {{user.apellido}}</h5>
+            <p class="card-text" style="font-weight: bold;">Edad: {{user.edad}}</p>
+            <p class="card-text" style="font-weight: bold;">Dni: {{user.dni}}</p>
+            <p class="card-text" style="font-weight: bold;">Perfil: {{user.perfil}}</p>
+            <a class="btn btn-primary" (click)="descargarTurnos(user)">Descargar Turnos</a>
+            </div>
+        </div>
+    </div>
+</div>

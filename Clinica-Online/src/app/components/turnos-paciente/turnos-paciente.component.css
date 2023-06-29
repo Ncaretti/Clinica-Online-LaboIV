@@ -81,3 +81,7 @@ p.clasificacion label:hover ~ label,
 p.clasificacion input:checked ~ label {
   color: orange;
 }
+
+.fuente{
+  font-weight: bold;
+}

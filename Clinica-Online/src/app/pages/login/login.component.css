@@ -1,0 +1,30 @@
+.contenedor{
+    background-image: url('../../../assets/hospital-fuera.jpg');
+    width: 100%;
+    height: 100vh;
+    background-position: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.contenedor-accRapido{
+    margin-top: 4%;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 2px;
+    margin-left: 5%;
+    margin-right: 5%;
+    /* background-color: rgba(0, 0, 0, 0.6); */
+    background-color: rgba(226, 242, 253, 0.7);
+}
+
+.container-carta{
+    padding-top: 1%;
+    display: flex;
+    justify-content: center;
+}
+
+.carta{
+    /* background-color: rgba(0, 0, 0, 0.6); */
+    background-color: rgba(226, 242, 253, 0.7);
+}

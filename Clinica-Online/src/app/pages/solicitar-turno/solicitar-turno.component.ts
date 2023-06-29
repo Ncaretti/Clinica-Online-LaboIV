@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Auth } from '@angular/fire/auth';
 import { Firestore, addDoc, collection, doc, getDoc, setDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { BdService, Especialidad, Turno } from 'src/app/services/bd.service';
@@ -31,7 +32,7 @@ export class SolicitarTurnoComponent {
   diasQueVan: number[] = [];
   horarioSeleccionado: Date | null = null;
 
-  constructor(private sweet : NotificacionesService ,private router : Router ,private bd : BdService,  private db : Firestore){
+  constructor(private sweet : NotificacionesService ,private router : Router ,private bd : BdService,  private db : Firestore, private mensaje : NotificacionesService, private authBd : Auth){
     this.currentDate = new Date();
     this.startDate = new Date();
     this.startDate.setDate(this.startDate.getDate());

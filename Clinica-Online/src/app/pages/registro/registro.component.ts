@@ -14,6 +14,8 @@ export class RegistroComponent {
 
   eleccion : string = "ninguno";
   usuarioActual!:any;
+  show : boolean = false;
+  esAdmin!: boolean;
 
   constructor(private datosAdmin : RecuperarAdminService ,private bd : BdService, private formBuilder: FormBuilder, private authFire : Auth, private auth : AuthService)
   {
@@ -21,16 +23,28 @@ export class RegistroComponent {
 
   ngOnInit()
   {
-    this.bd.getUsuario(this.auth.getUid()!)
-    .then((rsp) =>{
-      this.usuarioActual = rsp.data();
-      if(this.usuarioActual.perfil == 'admin')
-      {
-        this.datosAdmin.datosAdmin = this.usuarioActual;
-        console.log("ES ADMIN");
-      }
-    })
-    .catch(error => console.log(error));
+    this.show = true;
+    console.log(this.authFire.currentUser);
+    if(this.authFire.currentUser != null)
+    {
+      // this.show = true;
+      this.bd.getUsuario(this.auth.getUid()!)
+      .then((rsp) =>{
+        this.usuarioActual = rsp.data();
+        if(this.usuarioActual.perfil == 'admin')
+        {
+          this.datosAdmin.datosAdmin = this.usuarioActual;
+          console.log("ES ADMIN");
+          this.esAdmin = true;
+        }
+        this.show = false;
+      })
+      .catch(error => console.log(error));
+    }
+    else{
+      this.esAdmin = false;
+      this.show = false;
+    }
   }
 
 }

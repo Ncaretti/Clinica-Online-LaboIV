@@ -1,18 +1,32 @@
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
-    <div class="container-fluid">
-      <img src="../../../assets/honduras.png" alt="" width="40vw">
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav" style="padding-left: 10px;">
-          <li class="nav-item" style="padding-right: 10px;">
-            <a class="btn btn-primary" aria-current="page" routerLink="/bienvenido">Bienvenido</a>
-          </li>
-        </ul>
+<nav style="background-color: #e3f2fd;" class="navbar navbar-expand-sm navbar-light">
+    <a class="navbar-brand">
+      <img src="../../../assets/honduras.png" alt="" width="40vw" style="margin-left: 5px;">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div *ngIf="usuarioActual.perfil == 'paciente'" class="navbar-collapse justify-content-between collapse" id="navbarSupportedContent">
+      <div  class="navbar-nav me-auto mb-2 mb-lg-0">
+        <a class="nav-link nav-item" routerLink="/solicitar-turno">Solicitar Turno</a>
+        <a class="nav-link nav-item" routerLink="/mis-turnos">Mis Turnos</a>
+      </div>
+      <div class="navbar-nav">
+        <button class="nav-link nav-item" routerLink="/bienvenido">Inicio</button>
       </div>
     </div>
-</nav>
+    <div *ngIf="usuarioActual.perfil == 'especialista'" class="navbar-collapse justify-content-between collapse" id="navbarSupportedContent">
+      <div class="navbar-nav me-auto mb-2 mb-lg-0">
+        <a class="nav-link nav-item" routerLink="/mis-turnos">Mis Turnos</a>
+        <a class="nav-link nav-item" routerLink="/pacientes">Pacientes</a>
+      </div>
+      <div class="navbar-nav">
+        <button class="nav-link nav-item" routerLink="/bienvenido">Inicio</button>
+      </div>
+    </div>
+  </nav>
 
 
-<div *ngIf="true" class="container-lg col-md-12 col-lg-12" style="background-color: aquamarine; margin-top: 5%;">
+<div *ngIf="usuarioActual.perfil == 'especialista'" class="container-lg col-md-12 col-lg-12" style="background-color: aquamarine; margin-top: 5%;">
     <div class="row g-1" style="text-align: center;">
         <div class="col-12" style="background-color: aquamarine; margin-bottom: 50px;">
             <img [src]="usuarioActual.ImgPerfil_1" width="50px">
@@ -52,6 +66,45 @@
             <label style="margin-bottom: 10px;">Eleccion dias de trabajo para {{guardarEspecialidad}}.</label>
             <br>
             <button id="{{dia.dia}}" (click)="estaEnLista(dia.posicion, i)" class="btn btn-success" *ngFor="let dia of diasSemana; let i = index" style="margin-right: 10px;">{{dia.dia}}</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="usuarioActual.perfil == 'paciente'">
+    <div class="contenedor-historial" style="flex-direction: column; ">
+        <div *ngIf="arrayHistClinico.length != 0" style="text-align: center; margin-top: 2%; margin-bottom: 2%; border-bottom: 1px solid black;">
+            <div>
+                <button class="btn btn-success" (click)="crearPDF()">Descargar PDF</button>
+            </div>
+            <a style="font-size: 1.4rem; font-weight: bold;">Filtros:</a>
+            <div style="padding-top: 5px;">
+                <button id="{{esp}}" class="btn btn-primary" (click)="filtroEspecialidad(i, esp)" *ngFor="let esp of arrayEspecialidades; let i = index" style="margin-right: 5px; margin-bottom: 20px;" >{{esp}}</button>
+            </div>
+        </div>
+        <div id="pdf" *ngIf="arrayHistClinico.length != 0">
+            <div style="text-align: center; margin-bottom: 2%; ">
+                <img src="../../../assets/honduras.png" style="height: 100px; padding-top: 20px;">
+                <h2 style="font-weight: bold; padding-top: 20px;">HISTORIAL CLINICO</h2>
+            </div>
+            <h3 style="padding-left: 10px; font-weight: bold;">Paciente: {{usuarioActual.apellido}}, {{usuarioActual.nombre}}</h3>
+            <h3 style="padding-left: 10px; padding-top: 10px ;font-weight: bold;">Atenciones:</h3>
+
+            <div class="modal-body" *ngFor="let histUnico of arrayHistClinico" style="padding-left: 10px;">
+                <a style="font-weight: bold;">Fecha:</a> {{histUnico.fecha_turno | date: 'dd/LL/yy, HH:mm a'}}<br>
+                <a style="font-weight: bold;">Temperatura:</a> {{histUnico.temperatura}}<br>
+                <a style="font-weight: bold;">Peso:</a> {{histUnico.peso}}<br>
+                <a style="font-weight: bold;">Altura:</a> {{histUnico.altura}}<br>
+                <a style="font-weight: bold;">Presion:</a> {{histUnico.presion}}<br>
+                <a style="font-weight: bold;">{{histUnico.clave}}:</a> {{histUnico.valor}}<br>
+                <a>--------------------------------------------------------------------------------------------------------------------------------</a><br>
+            </div>
+        </div>
+        <div *ngIf="arrayHistClinico.length == 0">
+            <div style="text-align: center;">
+                <img src="../../../assets/honduras.png" style="height: 100px;">
+                <h2 style="font-weight: bold; padding-top: 10px;">HISTORIAL CLINICO</h2>
+            </div>
+            No hay historial clinico para mostrar.
         </div>
     </div>
 </div>

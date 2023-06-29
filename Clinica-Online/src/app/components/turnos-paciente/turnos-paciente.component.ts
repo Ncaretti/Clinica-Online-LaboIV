@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Firestore, doc, setDoc } from '@angular/fire/firestore';
+import { FormControl } from '@angular/forms';
+import { Observable, map } from 'rxjs';
 import { BdService, Turno } from 'src/app/services/bd.service';
 
 @Component({
@@ -16,6 +18,18 @@ export class TurnosPacienteComponent {
   verEncuesta: boolean = false;
   verAtencion: boolean = false;
   valorEstrellas : number = 0;
+  title = 'angular-text-search-highlight';
+  searchText = '';
+  characters = [
+    'Ant-Man',
+    'Aquaman',
+    'Asterix',
+    'The Atom',
+    'The Avengers',
+    'Batgirl',
+    'Batman',
+    'Batwoman'
+  ];
 
   constructor(private bd : BdService, private bdFire : Firestore){}
 

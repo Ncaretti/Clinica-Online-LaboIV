@@ -1,69 +1,87 @@
-<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-    <div *ngIf="true" style="position: absolute;">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="padding-left: 10px;">
-        <li class="nav-item">
-          <a class="btn btn-primary" aria-current="page" routerLink="/bienvenido">Bienvenido</a>
-        </li>
-      </ul>
-    </div>
-      <div class="container">
-        <a class="navbar-brand" style="margin: auto">
-          <img src="../../../assets/honduras.png" alt="" width="40vw">
-        </a>
+<div class="fondo">
+  <nav style="background-color: #e3f2fd;" class="navbar navbar-expand-sm navbar-light">
+    <a class="navbar-brand">
+      <img src="../../../assets/honduras.png" alt="" width="40vw" style="margin-left: 5px;">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div *ngIf="!esAdmin" class="navbar-collapse justify-content-between collapse" id="navbarSupportedContent">
+      <div  class="navbar-nav me-auto mb-2 mb-lg-0">
       </div>
+      <div class="navbar-nav">
+        <a class="nav-link nav-item" routerLink="/bienvenido">Inicio</a>
+      </div>
+    </div>
+    <div *ngIf="esAdmin" class="navbar-collapse justify-content-between collapse" id="navbarSupportedContent">
+      <div  class="navbar-nav me-auto mb-2 mb-lg-0">
+        <a class="nav-link nav-item" routerLink="/admin-user">Administrar Usuarios</a>
+        <a class="nav-link nav-item" routerLink="/mis-turnos">Turnos</a>
+        <a class="nav-link nav-item" routerLink="/usuarios">Usuarios</a>
+        <a class="nav-link nav-item" routerLink="/informes">Informes</a>
+      </div>
+      <div class="navbar-nav">
+        <a class="nav-link nav-item" routerLink="/bienvenido">Inicio</a>
+      </div>
+    </div>
   </nav>
 
-<div *ngIf="usuarioActual.perfil != 'admin'">
-  <!---------------------------------MENU ELECCION------------------------------------------->
-  <div *ngIf="eleccion == 'ninguno'">
-    <div class="text-center container-login">
-        <div class="login" (click)="eleccion = 'especialista'">
-          Especialista
-        </div>
-        <div class="login" (click)="eleccion = 'paciente'">
-          Paciente
-        </div>
+  <div *ngIf="show" class="d-flex justify-content-center" style="margin-top: 17%;">
+    <div class="spinner-border" role="status" style="width: 6rem; height: 6rem;">
+    </div>
+  </div>
+  <div *ngIf="!esAdmin" class="contenedor-eleccion">
+    <!---------------------------------MENU ELECCION------------------------------------------->
+    <div *ngIf="eleccion == 'ninguno'">
+      <div class="text-center container-login">
+          <div class="loginEsp" (click)="eleccion = 'especialista'">
+            <img src="../../../assets/especialista.png" width="250px">
+          </div>
+          <div class="loginPac" (click)="eleccion = 'paciente'">
+            <img src="../../../assets/paciente.png" width="250px">
+          </div>
+      </div>
+    </div>
+
+    <!---------------------------------PACIENTE------------------------------------------->
+    <div *ngIf="eleccion == 'paciente'">
+      <app-alta-paciente></app-alta-paciente>
+    </div>
+
+    <!---------------------------------ESPECIALISTA------------------------------------------->
+    <div *ngIf="eleccion == 'especialista'">
+      <app-alta-especialista></app-alta-especialista>
     </div>
   </div>
 
-  <!---------------------------------PACIENTE------------------------------------------->
-  <div *ngIf="eleccion == 'paciente'">
-    <app-alta-paciente></app-alta-paciente>
-  </div>
-
-  <!---------------------------------ESPECIALISTA------------------------------------------->
-  <div *ngIf="eleccion == 'especialista'">
-    <app-alta-especialista></app-alta-especialista>
-  </div>
-</div>
-
-<div *ngIf="usuarioActual.perfil == 'admin'">
-  <!---------------------------------MENU ELECCION------------------------------------------->
-  <div *ngIf="eleccion == 'ninguno'">
-    <div class="text-center container-login">
-        <div class="login" (click)="eleccion = 'especialista'">
-          Especialista
-        </div>
-        <div class="login" (click)="eleccion = 'paciente'">
-          Paciente
-        </div>
-        <div class="login" (click)="eleccion = 'admin'">
-          Administrador
-        </div>
+  <div *ngIf="esAdmin">
+    <!---------------------------------MENU ELECCION------------------------------------------->
+    <div *ngIf="eleccion == 'ninguno'" class="contenedor-eleccion">
+      <div class="text-center container-login">
+          <div class="loginEsp" (click)="eleccion = 'especialista'">
+            <img src="../../../assets/especialista.png" width="150px">
+          </div>
+          <div class="loginPac" (click)="eleccion = 'paciente'">
+            <img src="../../../assets/paciente.png" width="150px">
+          </div>
+          <div class="loginAdm" (click)="eleccion = 'admin'">
+            <img src="../../../assets/admin.png" width="150px">
+          </div>
+      </div>
     </div>
-  </div>
 
-  <!---------------------------------PACIENTE------------------------------------------->
-  <div *ngIf="eleccion == 'paciente'">
-    <app-alta-paciente></app-alta-paciente>
-  </div>
+    <!---------------------------------PACIENTE------------------------------------------->
+    <div *ngIf="eleccion == 'paciente'">
+      <app-alta-paciente></app-alta-paciente>
+    </div>
 
-  <!---------------------------------ESPECIALISTA------------------------------------------->
-  <div *ngIf="eleccion == 'especialista'">
-    <app-alta-especialista></app-alta-especialista>
-  </div>
+    <!---------------------------------ESPECIALISTA------------------------------------------->
+    <div *ngIf="eleccion == 'especialista'">
+      <app-alta-especialista></app-alta-especialista>
+    </div>
 
-  <div *ngIf="eleccion == 'admin'">
-    <app-alta-admin></app-alta-admin>
+    <div *ngIf="eleccion == 'admin'">
+      <app-alta-admin></app-alta-admin>
+    </div>
   </div>
 </div>

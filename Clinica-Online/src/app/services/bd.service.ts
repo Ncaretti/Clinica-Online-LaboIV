@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, FirestoreDataConverter, updateDoc, collection, collectionData, doc, getDoc } from '@angular/fire/firestore';
+import { Firestore, FirestoreDataConverter, updateDoc, collection, collectionData, doc, getDoc, addDoc, query, orderBy } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 export interface Usuario{
@@ -14,8 +14,8 @@ export interface Usuario{
   perfil: string,
   mail: string,
   pass: string,
-  imgPerfil1: string,
-  imgPerfil2: string
+  ImgPerfil_1: string,
+  ImgPerfil_2: string
 }
 
 export interface Especialidad{
@@ -42,7 +42,8 @@ export interface Turno{
   opinionPaciente: string,
   calificacionAtencion : string,
   estrellas: number,
-  mensajeCancelacionAdmin: string
+  mensajeCancelacionAdmin: string,
+  tieneHistClinico: boolean
 }
 
 export interface DiasEspecialista{
@@ -50,13 +51,38 @@ export interface DiasEspecialista{
   diasElegidos: any
 }
 
+export interface HistClinico{
+  id?:any,
+  fecha_turno: string,
+  fecha_cargaHist: string,
+  altura: number,
+  peso: number,
+  presion: number,
+  clave: string,
+  valor: string,
+  temperatura: number,
+  uid_especialista: string,
+  uid_paciente: string,
+  foto_paciente: string,
+  nombre_paciente:string,
+  apellido_paciente: string,
+  especialidad: string
+}
+
+export interface LogIngreso{
+  id?:any,
+  fecha_ingreso: number,
+  usuario: string
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class BdService {
-  private pacienteActivo = new BehaviorSubject<Usuario>(
-    {nombre: "",apellido: "", especialidad: [], estaAprobado: -1, perfil:'', edad: 0, dni: 0, obraSocial:"", mail:"", pass:"", imgPerfil1:"", imgPerfil2:""});
+  public pacienteActivo = new BehaviorSubject<Usuario>(
+    {nombre: "",apellido: "", especialidad: [], estaAprobado: -1, perfil:'', edad: 0, dni: 0, obraSocial:"", mail:"", pass:"", ImgPerfil_1:"", ImgPerfil_2:""});
   $getPacienteActivo = this.pacienteActivo.asObservable();
+  pacienteNulo = {nombre: "",apellido: "", especialidad: [], estaAprobado: -1, perfil:'', edad: 0, dni: 0, obraSocial:"", mail:"", pass:"", imgPerfil1:"", imgPerfil2:""};
 
   constructor(private firestore : Firestore) { }
 
@@ -111,5 +137,34 @@ export class BdService {
   enviarPacienteActivo(data:any)
   {
     this.pacienteActivo.next(data);
+  }
+
+  //HIST. CLINICO
+  getHistClinico() : Observable<HistClinico[]>{
+    const placeRef = collection(this.firestore, 'historiaClinica');
+    return collectionData(placeRef, {idField: 'id'}) as Observable<HistClinico[]>;
+  }
+
+  getFotoPaciente(uid : any){
+    const placeRef = doc(this.firestore, 'usuarios', uid);
+    getDoc(placeRef)
+    .then((usr)=>{
+      return usr.data()?.ImgPerfil_1;
+    })
+  }
+
+  //INFORMES
+  getLogIngreso() : Observable<LogIngreso[]>{
+    const placeRef = query(collection(this.firestore, 'logsIngreso'), orderBy('fecha_ingreso', 'desc'));
+    return collectionData(placeRef, {idField: 'id'}) as Observable<LogIngreso[]>;
+  }
+
+  uploadLogIngreso(log : LogIngreso){
+    const placeRef = collection(this.firestore, 'logsIngreso');
+
+    addDoc(placeRef,{
+      usuario: log.usuario,
+      fecha_ingreso: Date.now(),
+    })
   }
 }

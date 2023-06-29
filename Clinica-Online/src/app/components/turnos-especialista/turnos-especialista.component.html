@@ -78,6 +78,36 @@
           <label class="campos-turno">Diagnostico:</label>
             {{turno.mensajeDiagnosticoEspecialista}}
         </div>
+        <div *ngIf="turno.tieneHistClinico != true" class="col-12">
+          <button id="{{turno.id + 5}}" (click)="desactivarGenerico(turno.id, 'histClinica', 5)" class="btn btn-dark" style="float: right">Cargar Hist. Clinica</button>
+        </div>
+        <div *ngIf="estadoBoton.id == turno.id && estadoBoton.estado == 'histClinica'">
+          <div class="col-9 container ubicacion-texto">
+            <div class="row">
+              <div class="col-4">
+                <input type="number" class="form-control" placeholder="Altura" name="txtAltura" [(ngModel)]="altura">
+              </div>
+              <div class="col-4">
+                <input type="number" class="form-control" placeholder="Peso" name="txtPeso" [(ngModel)]="peso">
+              </div>
+              <div class="col-4">
+                <input type="number" class="form-control" placeholder="Temperatura" name="txtTemperatura" [(ngModel)]="temperatura">
+              </div>
+              <div class="col-4" style='margin-top: 10px;'>
+                <input type="number" class="form-control" placeholder="Presion" name="txtPresion" [(ngModel)]="presion">
+              </div>
+              <div class="col-4" style='margin-top: 10px;'>
+                <input type="text" class="form-control" placeholder="Clave" name="txtClave" [(ngModel)]="clave">
+              </div>
+              <div class="col-4" style='margin-top: 10px;'>
+                <input type="text" class="form-control" placeholder="Valor" name="txtValor" [(ngModel)]="valor">
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <button class="btn btn-dark" (click)="cargarHistClinica(turno)" style="float: right">Cargar</button>
+          </div>
+        </div>
       </div>
 
       <!---------------------------------------TURNO CANCELADO---------------------------------------------------------------->

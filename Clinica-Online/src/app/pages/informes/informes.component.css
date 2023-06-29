@@ -1,0 +1,26 @@
+.fondo{
+    background-image: url('../../../assets/fondo-hospital.jpg');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    height: 100vh;
+}
+
+.contenedor-opciones{
+    margin-right: 5%;
+    margin-left: 5%;
+    margin-top: 5%;
+    width: 90%;
+    display: flex;
+    justify-content: space-around;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+.opcion{
+    padding: 20px;
+    margin: 20px;
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: rgb(240, 255, 255, 0.6);
+}

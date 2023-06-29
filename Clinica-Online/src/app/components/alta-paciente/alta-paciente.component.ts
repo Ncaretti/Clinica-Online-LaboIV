@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { StorageReference, getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage';
 import { BdService } from 'src/app/services/bd.service';
+import { NotificacionesService } from 'src/app/services/notificaciones.service';
 import { RecuperarAdminService } from 'src/app/services/recuperar-admin.service';
 
 @Component({
@@ -19,7 +20,7 @@ export class AltaPacienteComponent {
   img2: any = "";
   usuarioRegistrado!: any;
 
-  constructor(private router : Router ,private bd : BdService, private datosAdmin : RecuperarAdminService ,private formBuilder: FormBuilder, private db : Firestore, private auth : Auth)
+  constructor(private mensaje : NotificacionesService, private router : Router ,private bd : BdService, private datosAdmin : RecuperarAdminService ,private formBuilder: FormBuilder, private db : Firestore, private auth : Auth)
   {
     this.formAltaPaciente = this.formBuilder.group({
       nombre: ['', [Validators.required]],
@@ -83,6 +84,8 @@ export class AltaPacienteComponent {
               ImgPerfil_2: this.img2,
             }, {merge:true});
 
+            this.mensaje.alertas("Registro exitoso!", 'success');
+            this.router.navigate(['/bienvenido']);
             //agregar sweetalert que todo salio ok
           })
         })
@@ -104,11 +107,13 @@ export class AltaPacienteComponent {
       }
       else
       {
+        this.mensaje.alertas("Complete/valide todos los campos.", 'error');
         console.log("falta validar campos");
       }
     }
     else
     {
+      this.mensaje.alertas("Falta/n la/s imagen/es.", 'error');
       console.log("falta 1 o las 2 img");
     }
   }

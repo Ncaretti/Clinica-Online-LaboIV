@@ -6,6 +6,7 @@ import { Auth, createUserWithEmailAndPassword, sendEmailVerification, signInWith
 import { RecuperarAdminService } from 'src/app/services/recuperar-admin.service';
 import { BdService } from 'src/app/services/bd.service';
 import { Router } from '@angular/router';
+import { NotificacionesService } from 'src/app/services/notificaciones.service';
 
 @Component({
   selector: 'app-alta-especialista',
@@ -18,8 +19,9 @@ export class AltaEspecialistaComponent {
   imagen: string = '';
   usuarioRegistrado!:any;
   public formAltaEspecialista : FormGroup;
+  especialidadesConcatenadas:string = '';
 
-  constructor(private router : Router ,private bd : BdService ,private datosAdmin : RecuperarAdminService ,private formBuilder: FormBuilder, private auth : Auth, private db : Firestore)
+  constructor(private mensaje : NotificacionesService ,private router : Router ,private bd : BdService ,private datosAdmin : RecuperarAdminService ,private formBuilder: FormBuilder, private auth : Auth, private db : Firestore)
   {
     this.formAltaEspecialista = this.formBuilder.group({
       nombre: ['', [Validators.required]],
@@ -76,6 +78,9 @@ export class AltaEspecialistaComponent {
               pass: this.formAltaEspecialista.value.pass,
               ImgPerfil_1: this.imagen
             }, {merge:true});
+
+            this.mensaje.alertas("Registro exitoso!", 'success');
+            this.router.navigate(['/bienvenido']);
           })
         })
 
@@ -96,13 +101,28 @@ export class AltaEspecialistaComponent {
       }
       else
       {
+        this.mensaje.alertas("Complete/valide todos los campos.", 'error');
         console.log("falta validar campos");
       }
     }
     else
     {
+      this.mensaje.alertas("Falta imagen.", 'error');
       console.log("falta 1 o las 2 img");
     }
+  }
+
+  cargarEspecialidades(esp : string){
+    for(let i = 0; i <= this.especialidad.length; i++)
+    {
+      if(!this.especialidad.includes(esp))
+      {
+        this.especialidad.push(esp);
+        this.especialidadesConcatenadas += esp+', ';
+      }
+    }
+    console.log(this.especialidad);
+    console.log(this.especialidadesConcatenadas);
   }
 }
 
