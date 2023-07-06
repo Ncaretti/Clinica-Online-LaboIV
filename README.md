@@ -22,7 +22,7 @@ Desde esta sección vamos a poder registrar Pacientes y Especialistas.
 
 ##Seccion Usuario
 Esta sección solamente la va a poder ver el usuario con perfil Administrador.
-Además de ver la información de los usuarios, desde esta sección se deberá habilitar o inhabilitar el acceso al sistema de los usuarios Especialista.
+Además de ver la información de los usuarios desde esta sección se deberá habilitar o inhabilitar el acceso al sistema de los usuarios Especialista.
 
 ![](https://github.com/Ncaretti/Clinica-Online-LaboIV/tree/main/Clinica-Online/src/assets/fotos_readme/4.png)
 
