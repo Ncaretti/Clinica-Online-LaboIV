@@ -22,16 +22,17 @@ import { TurnosPacienteComponent } from './components/turnos-paciente/turnos-pac
 import { TurnosEspecialistaComponent } from './components/turnos-especialista/turnos-especialista.component';
 import { TurnosAdminComponent } from './components/turnos-admin/turnos-admin.component';
 import { BuscadorPipe } from './pipes/buscador.pipe';
-import { DestacarDirective } from './directives/destacar.directive';
 import { PacientesComponent } from './pages/pacientes/pacientes.component';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InformesComponent } from './pages/informes/informes.component';
-import { MayusNombresPipe } from './pipes/mayus-nombres.pipe';
-import { MilisecAFechaPipe } from './pipes/milisec-afecha.pipe';
-import { DesactivarBotonDirective } from './directives/desactivar-boton.directive';
-import { ResaltarTextoDirective } from './directives/resaltar-texto.directive';
+import { TextoMayusculaDirective } from './directives/texto-mayuscula.directive';
+import { FechaSolicitarTurnoPipe } from './pipes/fecha-solicitar-turno.pipe';
+import { FechaTurnosPipe } from './pipes/fecha-turnos.pipe';
+import { DestacarBotonDirective } from './directives/destacar-boton.directive';
+import { FuenteBoldDirective } from './directives/fuente-bold.directive';
+import { DestacarDirective } from './directives/destacar.directive';
 
 @NgModule({
   declarations: [
@@ -50,14 +51,15 @@ import { ResaltarTextoDirective } from './directives/resaltar-texto.directive';
     TurnosEspecialistaComponent,
     TurnosAdminComponent,
     BuscadorPipe,
-    DestacarDirective,
     PacientesComponent,
     UsuariosComponent,
     InformesComponent,
-    MayusNombresPipe,
-    MilisecAFechaPipe,
-    DesactivarBotonDirective,
-    ResaltarTextoDirective
+    TextoMayusculaDirective,
+    FechaSolicitarTurnoPipe,
+    FechaTurnosPipe,
+    DestacarBotonDirective,
+    FuenteBoldDirective,
+    DestacarDirective
   ],
   imports: [
     BrowserModule,

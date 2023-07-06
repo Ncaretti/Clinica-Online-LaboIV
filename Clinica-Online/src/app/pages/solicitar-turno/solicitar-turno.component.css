@@ -39,3 +39,6 @@
      animation: aparece-derecha ease 1s backwards; 
 }
  
+.activo {
+    background-color: rgb(9, 189, 9);
+}

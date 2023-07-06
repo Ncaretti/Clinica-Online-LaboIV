@@ -73,7 +73,18 @@
             <label for="zip" class="form-label">Img Perfil 2</label>
             <input type="file" class="form-control" id="imagen2" placeholder="" value="" required
             (change)="uploadImage($event, 2)">
+        </div>
+
+        <div class="col-md-2" style="text-align: center;">
+            <div class="captcha">{{captcha}}</div>
+        </div>
+        <div class="col-md-4">
+          <input type="text" appTextoMayuscula formControlName="captcha" placeholder="Ingrese el captcha" class="form-control" required> 
+          <div *ngIf="formAltaPaciente.controls.captcha.errors?.required &&
+          formAltaPaciente.controls.captcha.touched">
+          El captcha es requerido.
           </div>
+        </div>
       </div>
 
       <div class="col-md-8" style="padding-top: 4%;">

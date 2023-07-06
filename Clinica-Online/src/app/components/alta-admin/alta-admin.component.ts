@@ -18,6 +18,11 @@ export class AltaAdminComponent {
   public formAltaAdmin : FormGroup;
   imgPerfil : any = "";
   usuarioRegistrado!: any;
+  captcha: string = '';
+
+  ngOnInit(){
+    this.captcha = this.generarCaptcha();
+  }
 
   constructor(private mensaje : NotificacionesService, private bd : BdService ,private datosAdmin : RecuperarAdminService ,private auth : Auth ,private router : Router ,private formBuilder: FormBuilder, private authFire : Auth, private db : Firestore)
   {
@@ -28,6 +33,7 @@ export class AltaAdminComponent {
       mail: ['', [Validators.required]],
       dni: ['', [Validators.required]],
       pass: ['', [Validators.required]],
+      captcha: ['', [Validators.required]]
     })
   }
 
@@ -60,7 +66,7 @@ export class AltaAdminComponent {
           sendEmailVerification(data.user)
           .then(()=>{
             this.usuarioRegistrado = data.user;
-
+            console.log()
             const ref = doc(this.db, 'usuarios', data.user.uid);
             console.log(data.user.uid);
             setDoc(ref, {
@@ -91,7 +97,7 @@ export class AltaAdminComponent {
                 this.router.navigate(['/admin-user'])
               })
             })
-          }, 1000);
+          }, 1500);
         }
       }
       else
@@ -105,6 +111,18 @@ export class AltaAdminComponent {
       this.mensaje.alertas("Falta imagen.", 'error');
       console.log("falta la img");
     }
+  }
+
+  generarCaptcha() {
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let retorno = '';
+
+    for (let i = 0; i < 6; i++) {
+      retorno += caracteres.charAt(
+        Math.floor(Math.random() * caracteres.length)
+      );
+    }
+    return retorno;
   }
 
 }

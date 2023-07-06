@@ -1,4 +1,22 @@
-<div id="{{turno.uid_especialista}}" *ngFor="let turno of arrayTurnos" class="contenedor-turno col-8" [ngClass]="obtenerEstado(turno.estado)">
+<div class="content" style="margin-left: 30%; margin-right: 30%; margin-bottom: 2%; margin-top: 2%;" role="main">
+  <div class="card">
+    <div class="form-group">
+      <input type="text" (click)="toggleDiv()" (blur)="ocultarDiv()" class="form-control" id="search-text" aria-describedby="search-text" 
+        [(ngModel)]="searchText" placeholder="Buscar" 
+        autofocus>
+    </div>
+    <ul class="list-group list-group-flush" *ngIf="mostrarDiv">
+      <button (click)="filtrarTurnos('limpiar')" class="list-group-item" style="text-align: left; font-weight: bold;">
+        Limpiar
+      </button>
+      <button (click)="filtrarTurnos(turno)" style="text-align: left;" class="list-group-item" *ngFor="let turno of arrayBusqueda | buscador: searchText"
+        appDestacar [classToApply]="'font-weight-bold'" [searchedWord]="searchText" [content]="turno"  
+        [setTitle]="true">
+      </button>
+    </ul>
+  </div>
+</div>
+<div id="{{turno.uid_especialista}}" *ngFor="let turno of arrayTurnosAMostrar" class="contenedor-turno col-8" [ngClass]="obtenerEstado(turno.estado)">
 <!-- <div *ngIf="turno.uid_especialista == this.usuarioActual.id" class="contenedor-turno col-8" [ngClass]="obtenerEstado(turno.estado)">    -->
     <div class="row">
       <div class="col-12">
@@ -10,7 +28,7 @@
       </div>
       <div class="col-8">
         <label class="campos-turno">Fecha:</label>
-        {{turno.fecha_hora | date: 'short'}}
+        {{turno.fecha_hora | fechaTurnos}}
       </div>
       <div class="col-8">
         <label class="campos-turno">Paciente:</label>

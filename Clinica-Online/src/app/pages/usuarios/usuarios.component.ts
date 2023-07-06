@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BdService, Turno, Usuario } from 'src/app/services/bd.service';
+import { BdService, HistClinico, Turno, Usuario } from 'src/app/services/bd.service';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import * as FileSaver from 'file-saver';
@@ -18,16 +18,42 @@ const EXCEL_EXTENSION = '.xlsx';
 })
 export class UsuariosComponent {
 
+  show : boolean = false;
   arrayUsuarios : Usuario [] = [];
   arrayTurnos : Turno [] = [];
   usuarioActivo: any;
+  arrayUsuariosTurno: Usuario [] = [];
+  arrayUsuariosDescarga : any [] = [];
+  arrayHistClinico: HistClinico [] = [];
+  arrayHistUnico: HistClinico [] = [];
+  arrayTurnosUnico: Turno [] = [];
 
   constructor(private bdFire : BdService, private authBd : Auth, private router : Router, private mensaje : NotificacionesService){}
 
   ngOnInit(){
+    this.show = true;
     this.bdFire.getUsuarios().subscribe(data => this.arrayUsuarios = data);
     this.bdFire.getTurnos().subscribe(data => this.arrayTurnos = data);
     this.bdFire.$getPacienteActivo.subscribe(data => this.usuarioActivo = data);
+    this.bdFire.getHistClinico().subscribe(data => this.arrayHistClinico = data);
+    setTimeout(()=>{
+      this.arrayUsuarios.forEach((usr)=>{
+        console.log(usr.id);
+        for(let i = 0; i < this.arrayTurnos.length; i++)
+        {
+          console.log(usr.id);
+          console.log(this.arrayTurnos[i].uid_paciente);
+          if(usr.id == this.arrayTurnos[i].uid_paciente || usr.id == this.arrayTurnos[i].uid_especialista && !this.arrayUsuariosTurno.includes(usr))
+          {
+            this.arrayUsuariosTurno.push(usr);
+          }
+        }
+      })
+
+      this.arrayUsuariosDescarga = this.arrayUsuarios.map(({ estaAprobado, especialidad, id, pass, ImgPerfil_1, ImgPerfil_2, ...resto }) => resto);
+      console.log(this.arrayUsuariosDescarga);
+      this.show = false;
+    }, 1500)
   }
 
   exportAsExcelFile(json: any[], excelFileName: string): void {
@@ -52,7 +78,7 @@ export class UsuariosComponent {
   }
 
   descargarExcel() {
-    this.exportAsExcelFile(this.arrayUsuarios, 'usuarios');
+    this.exportAsExcelFile(this.arrayUsuariosDescarga, 'usuarios');
   }
 
   descargarTurnos(user : Usuario){
@@ -81,6 +107,46 @@ export class UsuariosComponent {
         }
       })
       this.exportAsExcelFile(arrayAux, 'turnosEspecialista'+user.nombre+'_'+user.apellido+'_');
+    }
+  }
+
+  historialCompleto(id : any)
+  {
+    this.arrayHistUnico = [];
+    console.log(id);
+    this.arrayHistClinico.forEach((hist)=>{
+      if(id == hist.uid_paciente && !this.arrayHistUnico.includes(hist))
+      {
+        this.arrayHistUnico.push(hist);
+      }
+    })
+  }
+
+  turnosCompleto(id : any){
+    this.arrayTurnosUnico = [];
+
+    this.arrayTurnos.forEach((turn)=>{
+      if(id == turn.uid_paciente && !this.arrayTurnosUnico.includes(turn))
+      {
+        this.arrayTurnosUnico.push(turn);
+      }
+    })
+  }
+
+  pathIcono(estado: string):string{
+    switch(estado){
+      case 'espera':
+        return '../../../assets/pregunta.png';
+      case 'aceptado':
+        return '../../../assets/check.png';
+      case 'rechazado':
+        return '../../../assets/error.png';
+      case 'finalizado':
+        return '../../../assets/info.png';
+      default:
+        return '';
+      case 'cancelado':
+        return '../../../assets/cancel.png';
     }
   }
 }

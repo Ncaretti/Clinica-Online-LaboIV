@@ -154,19 +154,19 @@ export class MiPerfilComponent {
   filtroEspecialidad(id: any, esp: any)
   {
     console.log(esp);
-    console.log(document.getElementsByTagName('button')[(id + 1)]);
-    if((document.getElementsByTagName('button')[(id + 1)] as HTMLInputElement).className == "btn btn-danger ng-star-inserted")
+    console.log(document.getElementsByTagName('button')[(id + 3)]);
+    if((document.getElementsByTagName('button')[(id + 3)] as HTMLInputElement).className == "btn btn-danger ng-star-inserted")
     {
-      (document.getElementsByTagName('button')[(id + 1)] as HTMLInputElement).className = "btn btn-primary ng-star-inserted";
+      (document.getElementsByTagName('button')[(id + 3)] as HTMLInputElement).className = "btn btn-primary ng-star-inserted";
       this.arrayHistClinico = [];
       this.arrayHistClinico = this.auxArrayHist;
     }
-    else if((document.getElementsByTagName('button')[(id + 1)] as HTMLInputElement).className == "btn btn-primary ng-star-inserted")
+    else if((document.getElementsByTagName('button')[(id + 3)] as HTMLInputElement).className == "btn btn-primary ng-star-inserted")
     {
       console.log("entre");
       let arrayAux = this.auxArrayHist;
       this.arrayHistClinico = [];
-      (document.getElementsByTagName('button')[(id + 1)] as HTMLInputElement).className = "btn btn-danger ng-star-inserted";
+      (document.getElementsByTagName('button')[(id + 3)] as HTMLInputElement).className = "btn btn-danger ng-star-inserted";
       for(let i = 0; i < arrayAux.length; i++)
       {
         if(arrayAux[i].especialidad == esp && !this.arrayHistClinico.includes(arrayAux[i]))

@@ -37,7 +37,7 @@
   </div>
   <div class="contenedor-accRapido">
     <div *ngFor="let user of arrayAccesoRapido" style="padding: 5px; text-align: center; ">
-      <div (click)="cargarUserPass(user)">
+      <div (click)="cargarUserPass(user)" appDestacarBoton>
         <img  [src]="user.ImgPerfil_1" width="70px" height="70px" style="border-radius: 50%; border: 1px solid black; background-color: white;">
         <br>
         <label style="font-size: medium; font-weight: bold;">{{user.nombre}} {{user.apellido}}</label>

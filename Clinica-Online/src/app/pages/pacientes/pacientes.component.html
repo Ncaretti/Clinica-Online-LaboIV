@@ -71,6 +71,53 @@
                     </div>
                 </div>
             </div>
+            <button type="button" (click)="turnosCompleto(paciente.id)" style="margin-top: 10px;" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#atenciones" >
+                Atenciones recibidas
+            </button>
+            <div class="modal fade" id="atenciones" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Atenciones previas de {{paciente.apellido}}, {{paciente.nombre}}</h5>
+                    </div>
+                    <div class="modal-body" *ngFor="let turno of arrayTurnosUnico">
+                        <div *ngIf="arrayTurnosUnico.length > 0">
+                            <div class="row" style="border-bottom: solid 1px black;">
+                                <div class="col-12">
+                                  <img style="float: right" [src]="pathIcono(turno.estado)" width="50px">
+                                </div>
+                                <div class="col-8">
+                                  <label class="campos-turno">Estado:</label>
+                                   {{turno.estado}}
+                                </div>
+                                <div class="col-8">
+                                  <label class="campos-turno">Fecha:</label>
+                                  {{turno.fecha_hora | fechaTurnos}}
+                                </div>
+                                <div class="col-8">
+                                  <label class="campos-turno">Especialista:</label>
+                                  {{turno.apellido_esp}}, {{turno.nombre_esp}}
+                                </div>
+                                <div class="col-8">
+                                    <label class="campos-turno">DNI esp. :</label>
+                                    {{turno.dni_esp}}
+                                  </div>
+                                <div class="col-8">
+                                  <label class="campos-turno">Especialidad:</label>
+                                  {{turno.especialidad}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="arrayTurnosUnico.length == 0">
+                        <p style="font-weight: bold; font-size: 1.4rem; padding-top: 20px;">El paciente no tiene atenciones previas.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

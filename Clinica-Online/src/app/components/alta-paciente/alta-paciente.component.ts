@@ -19,6 +19,7 @@ export class AltaPacienteComponent {
   img1 : any = "";
   img2: any = "";
   usuarioRegistrado!: any;
+  captcha: string = '';
 
   constructor(private mensaje : NotificacionesService, private router : Router ,private bd : BdService, private datosAdmin : RecuperarAdminService ,private formBuilder: FormBuilder, private db : Firestore, private auth : Auth)
   {
@@ -30,7 +31,12 @@ export class AltaPacienteComponent {
       obraSocial: ['', [Validators.required]],
       mail: ['', [Validators.required]],
       pass: ['', [Validators.required]],
+      captcha: ['', [Validators.required]]
     })
+  }
+
+  ngOnInit(){
+    this.captcha = this.generarCaptcha();
   }
 
   async uploadImage($event: any, opcion: number) 
@@ -57,53 +63,63 @@ export class AltaPacienteComponent {
 
   async altaPaciente()
   {
+    console.log(this.formAltaPaciente.value.captcha);
+    console.log(this.captcha);
     if(this.img1 != "" && this.img2 != "")
     {
       if(this.formAltaPaciente.valid)
       {
-        console.log(this.formAltaPaciente.value.mail);
-        await createUserWithEmailAndPassword(this.auth, this.formAltaPaciente.value.mail, this.formAltaPaciente.value.pass)
-        .then((data)=>{
-          console.log(data.user.email);
-          sendEmailVerification(data.user)
-          .then(()=>{
-            this.usuarioRegistrado = data.user;
-
-            const ref = doc(this.db, 'usuarios', data.user.uid);
-            console.log(data.user.uid);
-            setDoc(ref, {
-              nombre: this.formAltaPaciente.value.nombre,
-              apellido: this.formAltaPaciente.value.apellido,
-              edad: this.formAltaPaciente.value.edad,
-              dni: this.formAltaPaciente.value.dni,
-              obraSocial: this.formAltaPaciente.value.obraSocial,
-              perfil: 'paciente',
-              mail: this.formAltaPaciente.value.mail,
-              pass: this.formAltaPaciente.value.pass,
-              ImgPerfil_1: this.img1,
-              ImgPerfil_2: this.img2,
-            }, {merge:true});
-
-            this.mensaje.alertas("Registro exitoso!", 'success');
-            this.router.navigate(['/bienvenido']);
-            //agregar sweetalert que todo salio ok
-          })
-        })
-
-        if(this.datosAdmin.datosAdmin != ''){
-          setTimeout(() => {
-            console.log(this.auth.currentUser);
-            this.auth.signOut()
+        if(this.captcha == this.formAltaPaciente.value.captcha.toUpperCase())
+        {
+          console.log(this.formAltaPaciente.value.mail);
+          await createUserWithEmailAndPassword(this.auth, this.formAltaPaciente.value.mail, this.formAltaPaciente.value.pass)
+          .then((data)=>{
+            console.log(data.user.email);
+            sendEmailVerification(data.user)
             .then(()=>{
-              signInWithEmailAndPassword(this.auth, this.datosAdmin.datosAdmin.mail, this.datosAdmin.datosAdmin.pass)
-              .then((usr)=>{
-                this.bd.getUsuario(usr.user.uid);
-                console.log(this.auth.currentUser);
-                this.router.navigate(['/admin-user'])
-              })
+              this.usuarioRegistrado = data.user;
+  
+              const ref = doc(this.db, 'usuarios', data.user.uid);
+              console.log(data.user.uid);
+              setDoc(ref, {
+                nombre: this.formAltaPaciente.value.nombre,
+                apellido: this.formAltaPaciente.value.apellido,
+                edad: this.formAltaPaciente.value.edad,
+                dni: this.formAltaPaciente.value.dni,
+                obraSocial: this.formAltaPaciente.value.obraSocial,
+                perfil: 'paciente',
+                mail: this.formAltaPaciente.value.mail,
+                pass: this.formAltaPaciente.value.pass,
+                ImgPerfil_1: this.img1,
+                ImgPerfil_2: this.img2,
+              }, {merge:true});
+  
+              this.mensaje.alertas("Registro exitoso!", 'success');
+              this.router.navigate(['/bienvenido']);
+              //agregar sweetalert que todo salio ok
             })
-          }, 1000);
+          })
+  
+          if(this.datosAdmin.datosAdmin != ''){
+            setTimeout(() => {
+              console.log(this.auth.currentUser);
+              this.auth.signOut()
+              .then(()=>{
+                signInWithEmailAndPassword(this.auth, this.datosAdmin.datosAdmin.mail, this.datosAdmin.datosAdmin.pass)
+                .then((usr)=>{
+                  this.bd.getUsuario(usr.user.uid);
+                  console.log(this.auth.currentUser);
+                  this.router.navigate(['/admin-user'])
+                })
+              })
+            }, 1000);
+          }
         }
+        else
+        {
+          this.mensaje.alertas("El captcha no coincide.", 'error');
+        }
+        
       }
       else
       {
@@ -116,5 +132,17 @@ export class AltaPacienteComponent {
       this.mensaje.alertas("Falta/n la/s imagen/es.", 'error');
       console.log("falta 1 o las 2 img");
     }
+  }
+
+  generarCaptcha() {
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result1 = '';
+
+    for (let i = 0; i < 6; i++) {
+      result1 += caracteres.charAt(
+        Math.floor(Math.random() * caracteres.length)
+      );
+    }
+    return result1;
   }
 }

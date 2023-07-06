@@ -20,6 +20,11 @@ export class AltaEspecialistaComponent {
   usuarioRegistrado!:any;
   public formAltaEspecialista : FormGroup;
   especialidadesConcatenadas:string = '';
+  captcha : string = '';
+
+  ngOnInit(){
+    this.captcha = this.generarCaptcha();
+  }
 
   constructor(private mensaje : NotificacionesService ,private router : Router ,private bd : BdService ,private datosAdmin : RecuperarAdminService ,private formBuilder: FormBuilder, private auth : Auth, private db : Firestore)
   {
@@ -31,6 +36,7 @@ export class AltaEspecialistaComponent {
       mail: ['', [Validators.required]],
       pass: ['', [Validators.required]],
       imgPerfil_1: ['', [Validators.required]],
+      captcha: ['', [Validators.required]]
     })
   }
   async uploadImage($event: any) 
@@ -56,47 +62,54 @@ export class AltaEspecialistaComponent {
     {
       if(this.formAltaEspecialista.valid)
       {
-        console.log(this.formAltaEspecialista.value.mail);
-        await createUserWithEmailAndPassword(this.auth, this.formAltaEspecialista.value.mail, this.formAltaEspecialista.value.pass)
-        .then((data)=>{
-          console.log(data.user.email);
-          sendEmailVerification(data.user)
-          .then(()=>{
-            this.usuarioRegistrado = data.user;
-
-            const ref = doc(this.db, 'usuarios', data.user.uid);
-            console.log(data.user.uid);
-            setDoc(ref, {
-              nombre: this.formAltaEspecialista.value.nombre,
-              apellido: this.formAltaEspecialista.value.apellido,
-              edad: this.formAltaEspecialista.value.edad,
-              dni: this.formAltaEspecialista.value.dni,
-              especialidad: this.especialidad,
-              estaAprobado: -1,
-              perfil: 'especialista',
-              mail: this.formAltaEspecialista.value.mail,
-              pass: this.formAltaEspecialista.value.pass,
-              ImgPerfil_1: this.imagen
-            }, {merge:true});
-
-            this.mensaje.alertas("Registro exitoso!", 'success');
-            this.router.navigate(['/bienvenido']);
-          })
-        })
-
-        if(this.datosAdmin.datosAdmin != ''){
-          setTimeout(() => {
-            console.log(this.auth.currentUser);
-            this.auth.signOut()
+        if(this.captcha == this.formAltaEspecialista.value.captcha.toUpperCase())
+        {
+          console.log(this.formAltaEspecialista.value.mail);
+          await createUserWithEmailAndPassword(this.auth, this.formAltaEspecialista.value.mail, this.formAltaEspecialista.value.pass)
+          .then((data)=>{
+            console.log(data.user.email);
+            sendEmailVerification(data.user)
             .then(()=>{
-              signInWithEmailAndPassword(this.auth, this.datosAdmin.datosAdmin.mail, this.datosAdmin.datosAdmin.pass)
-              .then((usr)=>{
-                this.bd.getUsuario(usr.user.uid);
-                console.log(this.auth.currentUser);
-                this.router.navigate(['/admin-user'])
-              })
+              this.usuarioRegistrado = data.user;
+  
+              const ref = doc(this.db, 'usuarios', data.user.uid);
+              console.log(data.user.uid);
+              setDoc(ref, {
+                nombre: this.formAltaEspecialista.value.nombre,
+                apellido: this.formAltaEspecialista.value.apellido,
+                edad: this.formAltaEspecialista.value.edad,
+                dni: this.formAltaEspecialista.value.dni,
+                especialidad: this.especialidad,
+                estaAprobado: -1,
+                perfil: 'especialista',
+                mail: this.formAltaEspecialista.value.mail,
+                pass: this.formAltaEspecialista.value.pass,
+                ImgPerfil_1: this.imagen
+              }, {merge:true});
+  
+              this.mensaje.alertas("Registro exitoso!", 'success');
+              this.router.navigate(['/bienvenido']);
             })
-          }, 1000);
+          })
+  
+          if(this.datosAdmin.datosAdmin != ''){
+            setTimeout(() => {
+              console.log(this.auth.currentUser);
+              this.auth.signOut()
+              .then(()=>{
+                signInWithEmailAndPassword(this.auth, this.datosAdmin.datosAdmin.mail, this.datosAdmin.datosAdmin.pass)
+                .then((usr)=>{
+                  this.bd.getUsuario(usr.user.uid);
+                  console.log(this.auth.currentUser);
+                  this.router.navigate(['/admin-user'])
+                })
+              })
+            }, 1000);
+          }
+        }
+        else
+        {
+          this.mensaje.alertas("Captcha invalido.", 'error');
         }
       }
       else
@@ -123,6 +136,18 @@ export class AltaEspecialistaComponent {
     }
     console.log(this.especialidad);
     console.log(this.especialidadesConcatenadas);
+  }
+
+  generarCaptcha() {
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let retorno = '';
+
+    for (let i = 0; i < 6; i++) {
+      retorno += caracteres.charAt(
+        Math.floor(Math.random() * caracteres.length)
+      );
+    }
+    return retorno;
   }
 }
 

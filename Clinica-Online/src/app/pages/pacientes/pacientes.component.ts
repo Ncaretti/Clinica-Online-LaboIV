@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BdService, HistClinico, Usuario } from 'src/app/services/bd.service';
+import { BdService, HistClinico, Turno, Usuario } from 'src/app/services/bd.service';
 
 @Component({
   selector: 'app-pacientes',
@@ -11,6 +11,8 @@ export class PacientesComponent {
   arrayHistorial: HistClinico[] = []; 
   arrayUsuarios : Usuario[] = [];
   arrayPacientes : Usuario[] = [];
+  arrayTurnosUnico: Turno[] = []
+  arrayTurnos: Turno[] = [];
 
   arrayHistorialUnico: HistClinico[] = [];
 
@@ -18,6 +20,7 @@ export class PacientesComponent {
 
   ngOnInit(){
     this.bdFire.getUsuarios().subscribe(data => this.arrayUsuarios = data);
+    this.bdFire.getTurnos().subscribe(data => this.arrayTurnos = data);
     this.bdFire.getHistClinico().subscribe((data)=>{
       this.arrayHistorial = data;
       this.arrayHistorial.forEach((hist)=>{
@@ -46,5 +49,33 @@ export class PacientesComponent {
       }
     })
     console.log(this.arrayHistorialUnico);
+  }
+
+  turnosCompleto(id : any){
+    this.arrayTurnosUnico = [];
+
+    this.arrayTurnos.forEach((turn)=>{
+      if(id == turn.uid_paciente && !this.arrayTurnosUnico.includes(turn))
+      {
+        this.arrayTurnosUnico.push(turn);
+      }
+    })
+  }
+
+  pathIcono(estado: string):string{
+    switch(estado){
+      case 'espera':
+        return '../../../assets/pregunta.png';
+      case 'aceptado':
+        return '../../../assets/check.png';
+      case 'rechazado':
+        return '../../../assets/error.png';
+      case 'finalizado':
+        return '../../../assets/info.png';
+      default:
+        return '';
+      case 'cancelado':
+        return '../../../assets/cancel.png';
+    }
   }
 }

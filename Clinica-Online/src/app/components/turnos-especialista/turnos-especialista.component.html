@@ -1,4 +1,22 @@
-<div id="{{turno.uid_especialista}}" *ngFor="let turno of arrayTurnos">
+<div class="content" style="margin-left: 30%; margin-right: 30%; margin-bottom: 2%; margin-top: 2%;" role="main">
+  <div class="card">
+    <div class="form-group">
+      <input type="text" (click)="toggleDiv()" (blur)="ocultarDiv()" class="form-control" id="search-text" aria-describedby="search-text" 
+        [(ngModel)]="searchText" placeholder="Buscar" 
+        autofocus>
+    </div>
+    <ul class="list-group list-group-flush" *ngIf="mostrarDiv">
+      <button (click)="filtrarTurnos('limpiar')" class="list-group-item" style="text-align: left; font-weight: bold;">
+        Limpiar
+      </button>
+      <button (click)="filtrarTurnos(turno)" style="text-align: left;" class="list-group-item" *ngFor="let turno of arrayBusqueda | buscador: searchText"
+        appDestacar [classToApply]="'font-weight-bold'" [searchedWord]="searchText" [content]="turno"  
+        [setTitle]="true">
+      </button>
+    </ul>
+  </div>
+</div>
+<div id="{{turno.uid_especialista}}" *ngFor="let turno of arrayTurnosAMostrar">
   <div *ngIf="turno.uid_especialista == this.usuarioActual.id" class="contenedor-turno col-8" [ngClass]="obtenerEstado(turno.estado)">  
     <div class="row">
       <div class="col-12">
@@ -10,7 +28,7 @@
       </div>
       <div class="col-8">
         <label class="campos-turno">Fecha:</label>
-        {{turno.fecha_hora | date: 'short'}}
+        {{turno.fecha_hora | fechaTurnos}}
       </div>
       <div class="col-8">
         <label class="campos-turno">Paciente:</label>
@@ -20,6 +38,7 @@
         <label class="campos-turno">Especialidad:</label>
         {{turno.especialidad}}
       </div>
+      
       <!---------------------------------------ACEPTAR O RECHAZAR TURNO---------------------------------------------------------------->
       <div *ngIf="turno.estado == 'espera'">
         <div class="col-12">
@@ -49,6 +68,8 @@
       <div *ngIf="turno.estado == 'aceptado'">
         <div class="col-12">
           <button id="{{turno.id + 3}}" (click)="desactivarFinalizar(turno.id, 'aceptado')" class="btn btn-warning" style="float: right">Finalizar</button>
+          <p style="float: right; visibility: hidden;">a</p>
+          <button id="{{turno.id + 15}}" (click)="desactivarGenerico(turno.id, 'cancelado', 15)" class="btn btn-danger" style="float: right">Cancelar Turno</button>
         </div>
       </div>
       <div *ngIf="estadoBoton.estado == 'aceptado' && estadoBoton.id == turno.id">
@@ -57,6 +78,15 @@
         </div>
         <div class="col-12">
           <button (click)="turnoFinalizado(turno)" class="btn btn-dark" style="float: right">Finalizar</button>
+        </div>
+      </div>
+
+      <div *ngIf="estadoBoton.estado == 'cancelado' && estadoBoton.id == turno.id">
+        <div class="col-10 container ubicacion-texto">
+          <input id="{{turno.id + 16}}" placeholder="Motivo de cancelacion" type="text" class="contenedor-mensaje">
+        </div>
+        <div class="col-12">
+          <button (click)="turnoCancelado(turno)" class="btn btn-success" style="float: right">Confirmar</button>
         </div>
       </div>
 
@@ -122,6 +152,12 @@
           <div class="col-8">
             <label class="campos-turno">Motivo cancelacion (admin):</label>
               {{turno.mensajeCancelacionAdmin}}
+          </div>
+        </div>
+        <div *ngIf="turno.mensajeCancelacionEsp != null">
+          <div class="col-8">
+            <label class="campos-turno">Motivo cancelacion (esp):</label>
+              {{turno.mensajeCancelacionEsp}}
           </div>
         </div>
       </div>

@@ -67,7 +67,17 @@
           La Imagen es requerida.
           </div>
       </div>
+      <div class="col-md-2" style="text-align: center;">
+        <div class="captcha">{{captcha}}</div>
+      </div>
+      <div class="col-md-4">
+        <input type="text" appTextoMayuscula formControlName="captcha" placeholder="Ingrese el captcha" class="form-control" required> 
+        <div *ngIf="formAltaEspecialista.controls.captcha.errors?.required &&
+        formAltaEspecialista.controls.captcha.touched">
+        El captcha es requerido.
+      </div>
     </div>
+  </div>
 
     <div class="col-md-8" style="padding-top: 4%;">
       <button type="submit" class="btn btn-primary btn-block" [disabled]="formAltaEspecialista.disabled">Dar de alta</button>

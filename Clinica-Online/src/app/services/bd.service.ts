@@ -43,7 +43,8 @@ export interface Turno{
   calificacionAtencion : string,
   estrellas: number,
   mensajeCancelacionAdmin: string,
-  tieneHistClinico: boolean
+  tieneHistClinico: boolean,
+  mensajeCancelacionEsp: string
 }
 
 export interface DiasEspecialista{

@@ -1,14 +1,14 @@
-import { Directive, Input, SimpleChanges, Renderer2, ElementRef, OnChanges } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer2, SimpleChanges } from '@angular/core';
 
 @Directive({
   selector: '[appDestacar]'
 })
-export class DestacarDirective implements OnChanges{
+export class DestacarDirective {
 
-  @Input() searchedWord: string | null = ""; // searchText
-  @Input() content: string = ""; // HTML content
-  @Input() classToApply: string = ""; //class to apply for highlighting
-  @Input() setTitle = false; //sets title attribute of HTML
+  @Input() searchedWord: string = '';
+  @Input() content: string = '';
+  @Input() classToApply: string = '';
+  @Input() setTitle = false;
 
   constructor(private el: ElementRef, private renderer: Renderer2) { }
 

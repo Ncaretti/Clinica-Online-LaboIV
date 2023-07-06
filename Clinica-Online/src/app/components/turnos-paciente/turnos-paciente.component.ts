@@ -11,6 +11,7 @@ import { BdService, Turno } from 'src/app/services/bd.service';
 })
 export class TurnosPacienteComponent {
   arrayTurnos: Turno[] = [];
+  arrayTurnosAMostrar: Turno[] = [];
   usuarioActual : any;
   icono!:string;
   estadoBoton: any = {};
@@ -18,18 +19,20 @@ export class TurnosPacienteComponent {
   verEncuesta: boolean = false;
   verAtencion: boolean = false;
   valorEstrellas : number = 0;
-  title = 'angular-text-search-highlight';
+  
   searchText = '';
-  characters = [
-    'Ant-Man',
-    'Aquaman',
-    'Asterix',
-    'The Atom',
-    'The Avengers',
-    'Batgirl',
-    'Batman',
-    'Batwoman'
-  ];
+  arrayBusqueda : any[] = [];
+  mostrarDiv: boolean = false;
+  // characters = [
+  //   'Ant-Man',
+  //   'Aquaman',
+  //   'Asterix',
+  //   'The Atom',
+  //   'The Avengers',
+  //   'Batgirl',
+  //   'Batman',
+  //   'Batwoman'
+  // ];
 
   constructor(private bd : BdService, private bdFire : Firestore){}
 
@@ -37,11 +40,28 @@ export class TurnosPacienteComponent {
   {
     this.arrayTurnos = [];
     this.bd.$getPacienteActivo.subscribe(data => this.usuarioActual = data);
-    this.bd.getTurnos().subscribe(data => this.arrayTurnos = data);
+    this.bd.getTurnos().subscribe(data => this.arrayTurnosAMostrar = data);
     setTimeout(()=>{
       console.log(this.usuarioActual);
-      console.log(this.arrayTurnos);
-    }, 200)
+      console.log(this.arrayTurnosAMostrar);
+      this.arrayTurnos = this.arrayTurnosAMostrar;
+      let apellidos_esp : string[] = [];
+      let especialidades : string[] = [];
+
+      this.arrayTurnos.forEach((turno)=>{
+        if(!apellidos_esp.includes(turno.apellido_esp) && this.usuarioActual.id == turno.uid_paciente)
+        {
+          apellidos_esp.push(turno.apellido_esp)
+        }
+        if(!especialidades.includes(turno.especialidad) && this.usuarioActual.id == turno.uid_paciente)
+        {
+          especialidades.push(turno.especialidad)
+        }
+      })
+
+      this.arrayBusqueda = apellidos_esp.concat(especialidades);
+      console.log(this.arrayBusqueda);
+    }, 700)
   }
 
   obtenerEstado(estado: string): string {
@@ -151,5 +171,38 @@ export class TurnosPacienteComponent {
     this.estadoBoton = {};
     // this.ngOnInit();
     console.log(this.arrayTurnos);
+  }
+
+  filtrarTurnos(t: string){
+    console.log(t);
+    this.arrayTurnosAMostrar = [];
+    if(t != 'limpiar')
+    {
+      (document.getElementById("search-text") as HTMLInputElement).value = t;
+      console.log(t);
+      this.arrayTurnos.forEach(turno =>{
+  
+        if(turno.especialidad == t || turno.apellido_esp == t){
+          this.arrayTurnosAMostrar.push(turno);
+        }
+      })
+    }
+    else
+    {
+      (document.getElementById("search-text") as HTMLInputElement).value = '';
+      this.arrayTurnosAMostrar = this.arrayTurnos;
+    }
+    
+    this.ocultarDiv();
+  }
+
+  toggleDiv() {
+    this.mostrarDiv = !this.mostrarDiv;
+  }
+  
+  ocultarDiv() {
+    setTimeout(() => {
+      this.mostrarDiv = false;
+    }, 100);
   }
 }

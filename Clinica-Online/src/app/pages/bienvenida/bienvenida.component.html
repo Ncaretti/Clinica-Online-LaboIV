@@ -7,44 +7,44 @@
   </button>
   <div *ngIf="usuarioActivo.perfil == 'paciente'" class="navbar-collapse justify-content-between collapse" id="navbarSupportedContent">
     <div  class="navbar-nav me-auto mb-2 mb-lg-0">
-      <a class="nav-link nav-item" routerLink="/solicitar-turno">Solicitar Turno</a>
-      <a class="nav-link nav-item" routerLink="/mis-turnos">Mis Turnos</a>
-      <a class="nav-link nav-item" routerLink="/mi-perfil">Mi Perfil</a>
+      <a appFuenteBold class="nav-link nav-item" routerLink="/solicitar-turno">Solicitar Turno</a>
+      <a appFuenteBold class="nav-link nav-item" routerLink="/mis-turnos">Mis Turnos</a>
+      <a appFuenteBold class="nav-link nav-item" routerLink="/mi-perfil">Mi Perfil</a>
     </div>
     <div class="navbar-nav">
-      <button class="nav-link nav-item" (click)="cerrarSesion()">Cerrar Sesion</button>
+      <button appFuenteBold class="nav-link nav-item" (click)="cerrarSesion()">Cerrar Sesion</button>
     </div>
   </div>
   <div *ngIf="usuarioActivo.perfil == 'admin'" class="navbar-collapse justify-content-between collapse" id="navbarSupportedContent">
     <div  class="navbar-nav me-auto mb-2 mb-lg-0">
-      <a class="nav-link nav-item" routerLink="/admin-user">Administrar Usuarios</a>
-      <a class="nav-link nav-item" routerLink="/mis-turnos">Turnos</a>
-      <a class="nav-link nav-item" routerLink="/usuarios">Usuarios</a>
-      <a class="nav-link nav-item" routerLink="/informes">Informes</a>
+      <a appFuenteBold class="nav-link nav-item" routerLink="/admin-user">Administrar Usuarios</a>
+      <a appFuenteBold class="nav-link nav-item" routerLink="/mis-turnos">Turnos</a>
+      <a appFuenteBold class="nav-link nav-item" routerLink="/usuarios">Usuarios</a>
+      <a appFuenteBold class="nav-link nav-item" routerLink="/informes">Informes</a>
     </div>
     <div class="navbar-nav">
-      <button class="nav-link nav-item" (click)="cerrarSesion()">Cerrar Sesion</button>
+      <button appFuenteBold class="nav-link nav-item" (click)="cerrarSesion()">Cerrar Sesion</button>
     </div>
   </div>
   <div *ngIf="usuarioActivo.perfil == 'especialista'" class="navbar-collapse justify-content-between collapse" id="navbarSupportedContent">
     <div class="navbar-nav me-auto mb-2 mb-lg-0">
-      <a class="nav-link nav-item" routerLink="/mis-turnos">Mis Turnos</a>
-      <a class="nav-link nav-item" routerLink="/mi-perfil">Mi Perfil</a>
-      <a class="nav-link nav-item" routerLink="/pacientes">Pacientes</a>
+      <a appFuenteBold class="nav-link nav-item" routerLink="/mis-turnos">Mis Turnos</a>
+      <a appFuenteBold class="nav-link nav-item" routerLink="/mi-perfil">Mi Perfil</a>
+      <a appFuenteBold class="nav-link nav-item" routerLink="/pacientes">Pacientes</a>
     </div>
     <div class="navbar-nav">
-      <button class="nav-link nav-item" (click)="cerrarSesion()">Cerrar Sesion</button>
+      <button appFuenteBold class="nav-link nav-item" (click)="cerrarSesion()">Cerrar Sesion</button>
     </div>
   </div>
 </nav>
 
 <div *ngIf="this.usuarioActivo.mail == ''" class="container-userNOLog">
   <div class="text-center container-login">
-    <div class="login" (click)="irLogin()">
-      <h3 class="texto-boton">Login</h3>
+    <div class="login" (click)="irLogin()" appDestacarBoton>
+      <h3 class="texto-boton" appDestacarBoton>Login</h3>
     </div>
-    <div class="login" (click)="irRegistrar()">
-      <h3 class="texto-boton">Registrar</h3>
+    <div class="login" (click)="irRegistrar()" appDestacarBoton>
+      <h3 class="texto-boton" appDestacarBoton>Registrar</h3>
     </div>
   </div>
 </div>

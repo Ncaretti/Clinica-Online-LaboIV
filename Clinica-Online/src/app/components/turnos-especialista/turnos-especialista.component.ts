@@ -15,6 +15,10 @@ export class TurnosEspecialistaComponent {
   icono!:string;
   estadoBoton: any = {};
   valorEstrellas : number = 0;
+  arrayTurnosAMostrar: Turno[] = [];
+  arrayBusqueda : any [] = [];
+  mostrarDiv: boolean = false;
+  searchText = ''; 
 
   peso!: number;
   altura!: number;
@@ -29,7 +33,29 @@ export class TurnosEspecialistaComponent {
   {
     this.arrayTurnos = [];
     this.bd.$getPacienteActivo.subscribe(data => this.usuarioActual = data);
-    this.bd.getTurnos().subscribe(data => this.arrayTurnos = data);
+    this.bd.getTurnos().subscribe(data => this.arrayTurnosAMostrar = data);
+
+    setTimeout(()=>{
+      console.log(this.usuarioActual);
+      console.log(this.arrayTurnosAMostrar);
+      this.arrayTurnos = this.arrayTurnosAMostrar;
+      let apellidos_pac : string[] = [];
+      let especialidades : string[] = [];
+
+      this.arrayTurnos.forEach((turno)=>{
+        if(!apellidos_pac.includes(turno.apellido_pac) && this.usuarioActual.id == turno.uid_especialista)
+        {
+          apellidos_pac.push(turno.apellido_pac)
+        }
+        if(!especialidades.includes(turno.especialidad) && this.usuarioActual.id == turno.uid_especialista)
+        {
+          especialidades.push(turno.especialidad)
+        }
+      })
+
+      this.arrayBusqueda = apellidos_pac.concat(especialidades);
+      console.log(this.arrayBusqueda);
+    }, 700)
   }
 
 
@@ -177,5 +203,53 @@ export class TurnosEspecialistaComponent {
     }
   }
 
+  turnoCancelado(turno: any)
+  {
+    console.log((document.getElementById(turno.id + 16) as HTMLInputElement).value);
+    let mensaje = (document.getElementById(turno.id + 16) as HTMLInputElement).value;
 
+    const turnoRef = doc(this.bdFire, 'turnos', turno.id);
+    if((document.getElementById(turno.id + 16) as HTMLInputElement).value != '')
+    {
+      setDoc(turnoRef, {
+        mensajeCancelacionEsp: mensaje
+      },{merge: true});
+
+      this.respuestaTurno(turno, 'cancelado');
+      this.estadoBoton = {};
+    }
+  }
+
+  filtrarTurnos(t: string){
+    console.log(t);
+    this.arrayTurnosAMostrar = [];
+    if(t != 'limpiar')
+    {
+      (document.getElementById("search-text") as HTMLInputElement).value = t;
+      console.log(t);
+      this.arrayTurnos.forEach(turno =>{
+  
+        if(turno.especialidad == t || turno.apellido_pac == t){
+          this.arrayTurnosAMostrar.push(turno);
+        }
+      })
+    }
+    else
+    {
+      (document.getElementById("search-text") as HTMLInputElement).value = '';
+      this.arrayTurnosAMostrar = this.arrayTurnos;
+    }
+    
+    this.ocultarDiv();
+  }
+
+  toggleDiv() {
+    this.mostrarDiv = !this.mostrarDiv;
+  }
+  
+  ocultarDiv() {
+    setTimeout(() => {
+      this.mostrarDiv = false;
+    }, 100);
+  }
 }

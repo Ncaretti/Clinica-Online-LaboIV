@@ -54,9 +54,9 @@
     </div>
   </div>
 
-  <div *ngIf="esAdmin">
+  <div *ngIf="esAdmin" class="contenedor-eleccion">
     <!---------------------------------MENU ELECCION------------------------------------------->
-    <div *ngIf="eleccion == 'ninguno'" class="contenedor-eleccion">
+    <div *ngIf="eleccion == 'ninguno'">
       <div class="text-center container-login">
           <div class="loginEsp" (click)="eleccion = 'especialista'">
             <img src="../../../assets/especialista.png" width="150px">
